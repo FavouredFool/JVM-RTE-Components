@@ -8,6 +8,8 @@ public class CommandLineReader {
 
     public void ReadFromCommandLine() {
 
+        WriteTutorial();
+
         // https://www.innoq.com/de/articles/2017/10/java-command-line-interfaces/
         try (BufferedReader in = new BufferedReader(new InputStreamReader(System.in))) {
             String line = null;
@@ -42,10 +44,49 @@ public class CommandLineReader {
     }
 
     void InterpretRTECommand(String verb, String file) {
+        switch (verb) {
+            case "start":
+                break;
+            case "stop":
+                break;
+            default: return;
+        }
+
         if (Main.Debug) System.out.println("rte: " + verb + " " + file);
     }
 
     void InterpretComponentCommand(String verb,  String file) {
+        if (file.equals("")) return;
+
+        switch (verb) {
+            case "deploy":
+                break;
+            case "start":
+                break;
+            case "stop":
+                break;
+            case "status":
+                break;
+            case "delete":
+                break;
+            default: return;
+        }
+
         if (Main.Debug) System.out.println("component: " + verb + " " + file);
+    }
+
+    void WriteTutorial() {
+        System.out.println("--- This is a component-based Java-Runtime-Environment. ---");
+        System.out.println("--- All components that can be deployed are already provided in a separate folder as .jar files. ---");
+        System.out.println();
+        System.out.println("--- Commands:");
+        System.out.println("\"rte start\" --- starts the Runtime Environment.");
+        System.out.println("\"rte stop\" --- stops the Runtime Environment.");
+        System.out.println("\"component deploy [path to .jar]\" --- deploys the component from a local folder.");
+        System.out.println("\"component start [component.jar]\" --- starts the component.");
+        System.out.println("\"component stop [component.jar]\" --- stops the component.");
+        System.out.println("\"component status [component.jar]\" --- logs the component's status.");
+        System.out.println("\"component delete [component.jar]\" --- deletes the component.");
+        System.out.println();
     }
 }
