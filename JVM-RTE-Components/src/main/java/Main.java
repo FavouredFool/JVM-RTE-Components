@@ -14,16 +14,11 @@ public class Main {
             }
         }
 
-        CommandLineReader reader = new CommandLineReader();
+        RTEManager rteManager = new RTEManager();
+        CommandLineReader reader = new CommandLineReader(rteManager);
 
         // this blocks the main Thread forever
         reader.ReadFromCommandLine();
-
-
-
-
-        //ComponentLoader loader = new ComponentLoader();
-        //loader.LoadJar("");
     }
 
 }

@@ -6,6 +6,13 @@ import java.util.List;
 
 public class CommandLineReader {
 
+    RTEManager _rteManager;
+
+
+    public CommandLineReader(RTEManager rteManager){
+        _rteManager = rteManager;
+    }
+
     public void ReadFromCommandLine() {
 
         WriteTutorial();
@@ -60,12 +67,14 @@ public class CommandLineReader {
 
         switch (verb) {
             case "deploy":
+                _rteManager.Deploy(file);
                 break;
             case "start":
                 break;
             case "stop":
                 break;
             case "status":
+                _rteManager.Status(file);
                 break;
             case "delete":
                 break;
