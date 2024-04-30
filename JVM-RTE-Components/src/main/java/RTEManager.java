@@ -2,19 +2,30 @@
 
 public class RTEManager {
 
-    ComponentManager _loader;
+    ComponentManager _componentManager;
 
     public RTEManager() {
-        _loader = new ComponentManager();
+        _componentManager = new ComponentManager();
     }
 
     public void Deploy(String componentName) {
-        _loader.LoadJar(componentName);
+        _componentManager.LoadJar(componentName);
         System.out.println(componentName + " successfully loaded.");
+    }
+
+    public void Start(String componentName){
+        boolean success = _componentManager.StartComponent(componentName);
+
+        if (success) {
+            System.out.println(componentName + " successfully started.");
+        }
+        else {
+            System.out.println(componentName + " could not be started.");
+        }
     }
 
     public void Status(String componentName){
         System.out.println("Status for " + componentName + ":");
-        System.out.println(_loader.GetComponentStatus(componentName));
+        System.out.println(_componentManager.GetComponentStatus(componentName));
     }
 }

@@ -38,38 +38,23 @@ public class CommandLineReader {
 
         String verb = parts[1];
         String file = "";
-        if (parts.length == 3) file = parts[2];
+        if (parts.length == 3 && !parts[2].equals("*")) file = parts[2];
 
         switch (parts[0]) {
-            case "rte":
-                InterpretRTECommand(verb, file);
-                break;
             case "component":
                 InterpretComponentCommand(verb, file);
                 break;
         }
     }
 
-    void InterpretRTECommand(String verb, String file) {
-        switch (verb) {
-            case "start":
-                break;
-            case "stop":
-                break;
-            default: return;
-        }
-
-        if (Main.Debug) System.out.println("rte: " + verb + " " + file);
-    }
-
     void InterpretComponentCommand(String verb,  String file) {
-        if (file.equals("")) return;
 
         switch (verb) {
             case "deploy":
                 _rteManager.Deploy(file);
                 break;
             case "start":
+                _rteManager.Start(file);
                 break;
             case "stop":
                 break;
@@ -80,17 +65,12 @@ public class CommandLineReader {
                 break;
             default: return;
         }
-
-        if (Main.Debug) System.out.println("component: " + verb + " " + file);
     }
 
     void WriteTutorial() {
         System.out.println("--- This is a component-based Java-Runtime-Environment. ---");
-        System.out.println("--- All components that can be deployed are already provided in a separate folder as .jar files. ---");
         System.out.println();
         System.out.println("--- Commands:");
-        System.out.println("\"rte start\" --- starts the Runtime Environment.");
-        System.out.println("\"rte stop\" --- stops the Runtime Environment.");
         System.out.println("\"component deploy [path to .jar]\" --- deploys the component from a local folder.");
         System.out.println("\"component start [component.jar]\" --- starts the component.");
         System.out.println("\"component stop [component.jar]\" --- stops the component.");
