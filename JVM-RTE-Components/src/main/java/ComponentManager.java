@@ -56,11 +56,11 @@ public class ComponentManager {
                     if (startMethod != null && endMethod != null) break;
 
                     for (Annotation annotation : method.getDeclaredAnnotations()){
-                        if (annotation instanceof TestAnnotationClass) {
+                        if (annotation instanceof StartAnnotation) {
                             System.out.println("foundStart");
                             startMethod = method;
                         }
-                        if (annotation instanceof TestAnnotationClassEnd) {
+                        if (annotation instanceof StartAnnotation) {
                             System.out.println("foundEnd");
                             endMethod = method;
                         }
