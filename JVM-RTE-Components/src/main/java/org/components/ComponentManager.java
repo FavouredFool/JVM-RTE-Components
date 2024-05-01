@@ -1,6 +1,7 @@
 package org.components;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -32,6 +33,8 @@ public class ComponentManager {
 
         Method startMethod = null;
         Method endMethod = null;
+        Class<?> startClass = null;
+        Class<?> endClass = null;
 
         while (jarEntries.hasMoreElements()) {
             JarEntry jarEntry = jarEntries.nextElement();
@@ -48,8 +51,10 @@ public class ComponentManager {
             try {
                 Class<?> loadedClass = classLoader.loadClass(className);
 
-                Method localStartMethod = getMethodsAnnotatedWith(loadedClass, StartAnnotation.class).stream().findFirst().orElse(null);
-                Method localEndMethod = getMethodsAnnotatedWith(loadedClass, StopAnnotation.class).stream().findFirst().orElse(null);
+                Method localStartMethod = getMethodsAnnotatedWith(loadedClass, StartMethodAnnotation.class).stream().findFirst().orElse(null);
+                Method localEndMethod = getMethodsAnnotatedWith(loadedClass, StopMethodAnnotation.class).stream().findFirst().orElse(null);
+                Class<?> localStartClass =  loadedClass.isAnnotationPresent(StartClassAnnotation.class) ?  loadedClass : null;
+                Class<?> localEndClass =  loadedClass.isAnnotationPresent(StartClassAnnotation.class) ?  loadedClass : null;
 
                 if (localStartMethod != null) {
                     startMethod = localStartMethod;
@@ -59,10 +64,23 @@ public class ComponentManager {
                     endMethod = localEndMethod;
                 }
 
+                if (localStartClass != null) {
+                    startClass = localStartClass;
+                }
+
+                if (localEndClass != null) {
+                    endClass = localEndClass;
+                }
+
             } catch (ClassNotFoundException ex) {
                 System.out.println("error: " + ex.getMessage());
                 return false;
             }
+        }
+
+        if (startClass == null || endClass == null) {
+            System.out.println("error: Couldn't find start or end class");
+            return false;
         }
 
         if (startMethod == null || endMethod == null) {
@@ -71,7 +89,7 @@ public class ComponentManager {
         }
 
         // Create new Component and add it to list
-        _components.add(new Component(_components.size(), componentPath, classLoader, startMethod, endMethod));
+        _components.add(new Component(_components.size(), componentPath, classLoader, startMethod, endMethod, startClass, endClass));
         System.out.println("Deployed Component: " + _components.get(_components.size()-1).toString());
         return true;
     }
@@ -105,8 +123,21 @@ public class ComponentManager {
         }
 
         System.out.println("StartComponent");
-        component._componentState = ComponentState.ACTIVE;
-        //component._startMethod;
+
+        component._componentState = ComponentState.START;
+
+        Object test = null;
+        try {
+            test = component._startClass.getDeclaredConstructor().newInstance();
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            component._startMethod.invoke(test);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
 
         return true;
     }
