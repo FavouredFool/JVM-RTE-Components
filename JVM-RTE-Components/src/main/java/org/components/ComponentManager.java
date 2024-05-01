@@ -1,3 +1,5 @@
+package org.components;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -5,24 +7,23 @@ import java.net.URLClassLoader;
 import java.util.*;
 import java.util.jar.JarFile;
 import java.util.jar.JarEntry;
+import org.componentannotations.*;
 
 public class ComponentManager {
 
     List<Component> _components = new ArrayList<>();
 
-    public boolean LoadJar(String componentName) {
+    public boolean LoadJar(String componentPath) {
 
-        String fileName = componentName + ".jar";
-
-        String pathToJar = "src/main/resources/components/" + fileName;
+        //String pathToJar = "src/main/resources/components/" + fileName;
         Enumeration<JarEntry> jarEntries = null;
         URLClassLoader classLoader = null;
 
         try {
-            JarFile jarFile = new JarFile(pathToJar);
+            JarFile jarFile = new JarFile(componentPath);
             jarEntries = jarFile.entries();
 
-            URL[] urls = new URL[]{new URL("jar:file:" + pathToJar + "!/")};
+            URL[] urls = new URL[]{new URL("jar:file:" + componentPath + "!/")};
             classLoader = URLClassLoader.newInstance(urls);
         } catch (Exception e) {
             System.out.println("error: " + e.getMessage());
@@ -70,7 +71,8 @@ public class ComponentManager {
         }
 
         // Create new Component and add it to list
-        _components.add(new Component(_components.size(), componentName, classLoader, startMethod, endMethod));
+        _components.add(new Component(_components.size(), componentPath, classLoader, startMethod, endMethod));
+        System.out.println("Deployed Component: " + _components.get(_components.size()-1).toString());
         return true;
     }
 
@@ -134,7 +136,7 @@ public class ComponentManager {
     public String GetComponentStatusById(int componentId) {
         for (Component component : _components) {
             if (component._id == componentId){
-                return component.GetStatus();
+                return component.toString();
             }
         }
         return "";
@@ -143,7 +145,7 @@ public class ComponentManager {
     public String GetComponentStatusAll() {
         String status = "";
         for (Component component : _components) {
-            status = status.concat(component.GetStatus() + "\n");
+            status = status.concat(component.toString() + "\n");
         }
         return status;
     }

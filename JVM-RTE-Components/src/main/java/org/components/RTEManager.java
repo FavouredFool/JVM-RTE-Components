@@ -1,4 +1,4 @@
-
+package org.components;
 
 public class RTEManager {
 
@@ -8,12 +8,12 @@ public class RTEManager {
         _componentManager = new ComponentManager();
     }
 
-    public void Deploy(String componentName) {
-        if (_componentManager.LoadJar(componentName)){
-            System.out.println(componentName + " successfully loaded.");
+    public void Deploy(String componentPath) {
+        if (_componentManager.LoadJar(componentPath)){
+            System.out.println(componentPath + " successfully loaded.");
         }
         else {
-            System.out.println(componentName + " could not be loaded.");
+            System.out.println(componentPath + " could not be loaded.");
         }
 
     }
@@ -30,7 +30,7 @@ public class RTEManager {
     }
 
     public void Status(String componentId){
-        if (componentId.equals("")){
+        if (componentId.isEmpty()){
             System.out.println("Status for all Components:");
         }
         else {

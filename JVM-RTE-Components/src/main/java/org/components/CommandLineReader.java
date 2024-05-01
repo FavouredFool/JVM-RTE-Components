@@ -1,8 +1,8 @@
+package org.components;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 
 public class CommandLineReader {
 
@@ -41,8 +41,19 @@ public class CommandLineReader {
         if (parts.length == 3 && !parts[2].equals("*")) file = parts[2];
 
         switch (parts[0]) {
+            case "rte":
+                InterpretRTECommands(verb, file);
+                break;
             case "component":
                 InterpretComponentCommand(verb, file);
+                break;
+        }
+    }
+
+    void InterpretRTECommands(String verb,  String file) {
+        switch (verb) {
+            case "stop":
+                System.out.println("--- Power down RTE. Goodbye. ---");
                 break;
         }
     }
@@ -70,9 +81,12 @@ public class CommandLineReader {
     void WriteTutorial() {
         System.out.println("--- This is a component-based Java-Runtime-Environment. ---");
         System.out.println();
-        System.out.println("--- Commands:");
+        System.out.println("--- Commands: ---");
         System.out.println("\"rte stop\" --- stops the application.");
+        System.out.println();
         System.out.println("\"component deploy [path to .jar]\" --- deploys the component from a local folder.");
+        System.out.println("(The path can be both an absolute path like \"D:/HotelComponent.jar\" or a relative path like \"src/main/resources/HotelComponent.jar\").");
+        System.out.println();
         System.out.println("\"component status\" --- logs every component's status.");
         System.out.println("\"component status [componentID]\" --- logs the component's status.");
         System.out.println("\"component start [componentID]\" --- starts the component.");

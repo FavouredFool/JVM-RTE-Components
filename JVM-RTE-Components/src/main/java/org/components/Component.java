@@ -1,20 +1,21 @@
+package org.components;
+
 import java.lang.reflect.Method;
-import java.util.UUID;
 
 public class Component {
 
     ComponentState _componentState;
     int _id;
-    String _name;
+    String _path;
     ClassLoader _classLoader;
     Method _startMethod;
     Method _endMethod;
 
 
 
-    public Component(int id, String name, ClassLoader classLoader, Method startMethod, Method endMethod){
+    public Component(int id, String path, ClassLoader classLoader, Method startMethod, Method endMethod){
         _componentState = ComponentState.SLEEP;
-        _name = name;
+        _path = path;
         _id = id;
         _classLoader = classLoader;
         _startMethod = startMethod;
@@ -22,7 +23,7 @@ public class Component {
     }
 
 
-    public String GetStatus() {
-        return "[Component(ID: " + _id + ", Name: " + _name + ", State: " + _componentState + ")]";
+    public String toString() {
+        return "[Component(ID: " + _id + ", State: " + _componentState + ", Path: " + _path + ")]";
     }
 }
