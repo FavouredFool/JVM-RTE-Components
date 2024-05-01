@@ -12,7 +12,7 @@ public class ComponentManager {
 
     List<Component> _components = new ArrayList<>();
 
-    public void LoadJar(String componentName) {
+    public boolean LoadJar(String componentName) {
 
         String fileName = componentName + ".jar";
 
@@ -27,10 +27,8 @@ public class ComponentManager {
             URL[] urls = new URL[]{new URL("jar:file:" + pathToJar + "!/")};
             classLoader = URLClassLoader.newInstance(urls);
         } catch (Exception e) {
-            //throw new RuntimeException(e);
-            //e.printStackTrace();
-            System.out.println("error");
-            return;
+            System.out.println("error: " + e.getMessage());
+            return false;
         }
 
         Method startMethod = null;
@@ -51,33 +49,46 @@ public class ComponentManager {
             try {
                 Class<?> loadedClass = classLoader.loadClass(className);
 
-                for (Method method : loadedClass.getDeclaredMethods()){
+                Method localStartMethod = getMethodsAnnotatedWith(loadedClass, StartAnnotation.class).stream().findFirst().orElse(null);
+                Method localEndMethod = getMethodsAnnotatedWith(loadedClass, StopAnnotation.class).stream().findFirst().orElse(null);
 
-                    if (startMethod != null && endMethod != null) break;
+                if (localStartMethod != null) {
+                    startMethod = localStartMethod;
+                }
 
-                    for (Annotation annotation : method.getDeclaredAnnotations()){
-                        if (annotation instanceof StartAnnotation) {
-                            System.out.println("foundStart");
-                            startMethod = method;
-                        }
-                        if (annotation instanceof StartAnnotation) {
-                            System.out.println("foundEnd");
-                            endMethod = method;
-                        }
-                    }
+                if (localEndMethod != null) {
+                    endMethod = localEndMethod;
                 }
 
             } catch (ClassNotFoundException ex) {
-                throw new RuntimeException(ex);
+                System.out.println("error: " + ex.getMessage());
+                return false;
             }
         }
 
         if (startMethod == null || endMethod == null) {
-            System.out.println("Couldn't find start or end method");
+            System.out.println("error: Couldn't find start or end method");
+            return false;
         }
 
         // Create new Component and add it to list
         _components.add(new Component(_components.size(), componentName, classLoader, startMethod, endMethod));
+        return true;
+    }
+
+    // from https://stackoverflow.com/questions/6593597/java-seek-a-method-with-specific-annotation-and-its-annotation-element
+    public static List<Method> getMethodsAnnotatedWith(final Class<?> type, final Class<? extends Annotation> annotation) {
+        final List<Method> methods = new ArrayList<Method>();
+        Class<?> klass = type;
+
+        // iterate though the list of methods declared in the class represented by klass variable, and add those annotated with the specified annotation
+        for (final Method method : klass.getDeclaredMethods()) {
+            if (method.isAnnotationPresent(annotation)) {
+                methods.add(method);
+            }
+        }
+
+        return methods;
     }
 
     public boolean StartComponent(String componentName) {

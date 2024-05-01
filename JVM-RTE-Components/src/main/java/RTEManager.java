@@ -9,8 +9,13 @@ public class RTEManager {
     }
 
     public void Deploy(String componentName) {
-        _componentManager.LoadJar(componentName);
-        System.out.println(componentName + " successfully loaded.");
+        if (_componentManager.LoadJar(componentName)){
+            System.out.println(componentName + " successfully loaded.");
+        }
+        else {
+            System.out.println(componentName + " could not be loaded.");
+        }
+
     }
 
     public void Start(String componentName){
