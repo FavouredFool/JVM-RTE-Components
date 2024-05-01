@@ -71,11 +71,13 @@ public class CommandLineReader {
         System.out.println("--- This is a component-based Java-Runtime-Environment. ---");
         System.out.println();
         System.out.println("--- Commands:");
+        System.out.println("\"rte stop\" --- stops the application.");
         System.out.println("\"component deploy [path to .jar]\" --- deploys the component from a local folder.");
-        System.out.println("\"component start [component.jar]\" --- starts the component.");
-        System.out.println("\"component stop [component.jar]\" --- stops the component.");
-        System.out.println("\"component status [component.jar]\" --- logs the component's status.");
-        System.out.println("\"component delete [component.jar]\" --- deletes the component.");
+        System.out.println("\"component status\" --- logs every component's status.");
+        System.out.println("\"component status [componentID]\" --- logs the component's status.");
+        System.out.println("\"component start [componentID]\" --- starts the component.");
+        System.out.println("\"component stop [componentID]\" --- stops the component.");
+        System.out.println("\"component delete [componentID]\" --- deletes the component.");
         System.out.println();
     }
 }

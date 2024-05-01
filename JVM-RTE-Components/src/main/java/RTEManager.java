@@ -18,19 +18,25 @@ public class RTEManager {
 
     }
 
-    public void Start(String componentName){
-        boolean success = _componentManager.StartComponent(componentName);
+    public void Start(String componentId){
+        boolean success = _componentManager.StartComponent(Integer.parseInt(componentId));
 
         if (success) {
-            System.out.println(componentName + " successfully started.");
+            System.out.println("Component with ID " + componentId + " successfully started.");
         }
         else {
-            System.out.println(componentName + " could not be started.");
+            System.out.println("Component with ID " + componentId + " could not be started.");
         }
     }
 
-    public void Status(String componentName){
-        System.out.println("Status for " + componentName + ":");
-        System.out.println(_componentManager.GetComponentStatus(componentName));
+    public void Status(String componentId){
+        if (componentId.equals("")){
+            System.out.println("Status for all Components:");
+        }
+        else {
+            System.out.println("Status for Component with ID " + componentId + ":");
+        }
+
+        System.out.println(_componentManager.GetComponentStatus(componentId));
     }
 }

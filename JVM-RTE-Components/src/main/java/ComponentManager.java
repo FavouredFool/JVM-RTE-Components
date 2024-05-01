@@ -1,6 +1,4 @@
 import java.lang.annotation.Annotation;
-import java.lang.instrument.Instrumentation;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -91,36 +89,51 @@ public class ComponentManager {
         return methods;
     }
 
-    public boolean StartComponent(String componentName) {
-        Component component = _components.stream().filter(e -> e._name.equals(componentName)).findFirst().orElse(null);
+    public boolean StartComponent(int componentId) {
+        Component component = _components.stream().filter(e -> e._id == componentId).findFirst().orElse(null);
 
         if (component == null) {
+            System.out.println("error: Couldn't find component with id " + componentId);
             return false;
         }
+
+        if (!(component._componentState == ComponentState.SLEEP)){
+            System.out.println("error: Component is not in sleep-state");
+            return false;
+        }
+
+        System.out.println("StartComponent");
+        component._componentState = ComponentState.ACTIVE;
+        //component._startMethod;
 
         return true;
     }
 
-    public String GetComponentStatus(String componentName) {
-        String status;
+    public String GetComponentStatus(String componentId) {
+        String status = "";
 
-        if (componentName.equals("")){
+        if (componentId.isEmpty()){
             status = GetComponentStatusAll();
         }
         else {
-            status = GetComponentStatusByName(componentName);
+            try{
+                status = GetComponentStatusById(Integer.parseInt(componentId));
+            }
+            catch (Exception e){
+                System.out.println("error: Enter an ID, not a name.");
+            }
         }
 
-        if (status.equals("")){
+        if (status.isEmpty()){
             return "No Component Found";
         }
 
         return status;
     }
 
-    public String GetComponentStatusByName(String componentName) {
+    public String GetComponentStatusById(int componentId) {
         for (Component component : _components) {
-            if (component._name.equals(componentName)){
+            if (component._id == componentId){
                 return component.GetStatus();
             }
         }
