@@ -17,7 +17,7 @@
     <dependencies>
         <dependency>
             <groupId>org.componentannotations</groupId>
-            <artifactId>AnnotationLibraryJVM</artifactId>
+            <artifactId>ComponentAnnotations</artifactId>
             <version>1.0</version>
         </dependency>
         <dependency>
