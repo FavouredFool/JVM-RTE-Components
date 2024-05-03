@@ -54,6 +54,7 @@ public class CommandLineReader {
         switch (verb) {
             case "stop":
                 System.out.println("--- Power down RTE. Goodbye. ---");
+                System.exit(0);
                 break;
         }
     }
@@ -68,11 +69,13 @@ public class CommandLineReader {
                 _rteManager.Start(file);
                 break;
             case "stop":
+                _rteManager.Stop(file);
                 break;
             case "status":
                 _rteManager.Status(file);
                 break;
             case "delete":
+                _rteManager.Delete(file);
                 break;
             default: return;
         }
@@ -82,16 +85,14 @@ public class CommandLineReader {
         System.out.println("--- This is a component-based Java-Runtime-Environment. ---");
         System.out.println();
         System.out.println("--- Commands: ---");
-        System.out.println("\"rte stop\" --- stops the application.");
         System.out.println();
         System.out.println("\"component deploy [path to .jar]\" --- deploys the component from a local folder.");
         System.out.println("(The path can be both an absolute path like \"D:/HotelComponent.jar\" or a relative path like \"src/main/resources/HotelComponent.jar\").");
-        System.out.println();
         System.out.println("\"component status\" --- logs every component's status.");
         System.out.println("\"component status [componentID]\" --- logs the component's status.");
         System.out.println("\"component start [componentID]\" --- starts the component.");
         System.out.println("\"component stop [componentID]\" --- stops the component.");
         System.out.println("\"component delete [componentID]\" --- deletes the component.");
-        System.out.println();
+        System.out.println("\"rte stop\" --- stops the application.");
     }
 }

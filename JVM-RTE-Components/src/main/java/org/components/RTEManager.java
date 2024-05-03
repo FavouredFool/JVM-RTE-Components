@@ -29,6 +29,28 @@ public class RTEManager {
         }
     }
 
+    public void Stop(String componentId){
+        boolean success = _componentManager.StopComponent(Integer.parseInt(componentId));
+
+        if (success) {
+            System.out.println("Component with ID " + componentId + " successfully stopped.");
+        }
+        else {
+            System.out.println("Component with ID " + componentId + " could not be stopped.");
+        }
+    }
+
+    public void Delete(String componentId){
+        boolean success = _componentManager.DeleteComponent(Integer.parseInt(componentId));
+
+        if (success) {
+            System.out.println("Component with ID " + componentId + " successfully deleted.");
+        }
+        else {
+            System.out.println("Component with ID " + componentId + " could not be deleted.");
+        }
+    }
+
     public void Status(String componentId){
         if (componentId.isEmpty()){
             System.out.println("Status for all Components:");

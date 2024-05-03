@@ -122,8 +122,6 @@ public class ComponentManager {
             return false;
         }
 
-        System.out.println("StartComponent");
-
         component._componentState = ComponentState.START;
 
         Object test = null;
@@ -138,6 +136,55 @@ public class ComponentManager {
         } catch (IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
+
+        return true;
+    }
+
+    public boolean StopComponent(int componentId) {
+        Component component = _components.stream().filter(e -> e._id == componentId).findFirst().orElse(null);
+
+        if (component == null) {
+            System.out.println("error: Couldn't find component with id " + componentId);
+            return false;
+        }
+
+        if (!(component._componentState == ComponentState.ACTIVE)){
+            System.out.println("error: Component is not in active-state");
+            return false;
+        }
+
+        component._componentState = ComponentState.STOP;
+
+        Object test = null;
+        try {
+            test = component._endClass.getDeclaredConstructor().newInstance();
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            component._endMethod.invoke(test);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
+
+        return true;
+    }
+
+    public boolean DeleteComponent(int componentId) {
+        Component component = _components.stream().filter(e -> e._id == componentId).findFirst().orElse(null);
+
+        if (component == null) {
+            System.out.println("error: Couldn't find component with id " + componentId);
+            return false;
+        }
+
+        if (!(component._componentState == ComponentState.SLEEP)){
+            System.out.println("error: Component is not in sleep-state");
+            return false;
+        }
+
+        _components.remove(component);
 
         return true;
     }
