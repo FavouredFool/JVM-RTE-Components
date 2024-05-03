@@ -38,9 +38,9 @@ public class Client {
 
         //cacheReferenceProxy.ClearCache();
 
-        System.out.println("\nFind all hotels who's name contains the String \"org.task1.Hotel\":");
+        System.out.println("\nFind all hotels who's name contains the String \"Hotel\":");
 
-        List<Hotel> resultCached = hotelSearchProxy.getHotelsByName("org.task1.Hotel");
+        List<Hotel> resultCached = hotelSearchProxy.getHotelsByName("Hotel");
         for ( Hotel str : resultCached ){
             System.out.println( str );
         }

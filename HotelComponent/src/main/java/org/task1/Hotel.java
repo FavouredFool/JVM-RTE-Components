@@ -14,6 +14,6 @@ public class Hotel {
 
     @Override
     public String toString() {
-        return "[org.task1.Hotel(index: " + _index + ", name: " + _name + ", city: " + _city + ")]";
+        return "[Hotel(index: " + _index + ", name: " + _name + ", city: " + _city + ")]";
     }
 }

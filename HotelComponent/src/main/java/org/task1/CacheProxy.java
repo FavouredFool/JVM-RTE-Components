@@ -4,7 +4,7 @@ import java.util.List;
 
 public class CacheProxy implements ICaching {
 
-    // This class always provides org.task1.HotelRetrieval with Methods that can be called, because it is never null. It has a reference to the real org.task1.Cache.
+    // This class always provides HotelRetrieval with Methods that can be called, because it is never null. It has a reference to the real org.task1.Cache.
 
     ICaching _subject;
 
