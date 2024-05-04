@@ -19,7 +19,15 @@ public class RTEManager {
     }
 
     public void Start(String componentId){
-        boolean success = _componentManager.StartComponent(Integer.parseInt(componentId));
+        boolean success;
+        try {
+            success = _componentManager.StartComponent(Integer.parseInt(componentId));
+        }
+        catch(Exception e) {
+            System.out.println("error: Enter an ID, not a name.");
+            success = false;
+        }
+
 
         if (success) {
             System.out.println("Component with ID " + componentId + " successfully started.");
@@ -30,7 +38,14 @@ public class RTEManager {
     }
 
     public void Stop(String componentId){
-        boolean success = _componentManager.StopComponent(Integer.parseInt(componentId));
+        boolean success;
+        try {
+            success = _componentManager.StopComponent(Integer.parseInt(componentId));
+        }
+        catch(Exception e) {
+            System.out.println("error: Enter an ID, not a name.");
+            success = false;
+        }
 
         if (success) {
             System.out.println("Component with ID " + componentId + " successfully stopped.");
@@ -41,7 +56,14 @@ public class RTEManager {
     }
 
     public void Delete(String componentId){
-        boolean success = _componentManager.DeleteComponent(Integer.parseInt(componentId));
+        boolean success;
+        try {
+            success = _componentManager.DeleteComponent(Integer.parseInt(componentId));
+        }
+        catch(Exception e) {
+            System.out.println("error: Enter an ID, not a name.");
+            success = false;
+        }
 
         if (success) {
             System.out.println("Component with ID " + componentId + " successfully deleted.");
