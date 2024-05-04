@@ -2,35 +2,35 @@ package org.greeter;
 
 public class Greeter {
 
-    boolean _isStop = false;
+    static boolean _isStop = false;
 
-    public void InitialGreet() {
-        System.out.println("Greet Component: First Hello!");
+    public static void InitialGreet() {
+        System.out.println("Greeting Component: First Hello!");
 
         ContinuousGreet();
     }
 
-    public void ContinuousGreet() {
+    public static void ContinuousGreet() {
         _isStop = false;
 
         for (int i = 0; i < Integer.MAX_VALUE; i++) {
-            System.out.println("Greet Component: Continuous Hello Number " + i + "!");
+            System.out.println("Greeting Component: Continuous Hello! [Number " + i + "]");
 
             try {
                 Thread.sleep(10000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+            } catch (InterruptedException ignored) {
+
             }
 
             if (_isStop){
-                System.out.println("Greet Component: Last Hello!");
+                System.out.println("Greeting Component: Last Hello!");
                 break;
             }
 
         }
     }
 
-    public void LastGreet() {
+    public static void LastGreet() {
         _isStop = true;
     }
 }

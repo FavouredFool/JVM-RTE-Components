@@ -13,6 +13,7 @@ import org.componentannotations.*;
 public class ComponentManager {
 
     List<Component> _components = new ArrayList<>();
+    static int id_counter = 0;
 
     public boolean LoadJar(String componentPath) {
 
@@ -89,8 +90,11 @@ public class ComponentManager {
         }
 
         // Create new Component and add it to list
-        _components.add(new Component(_components.size(), componentPath, classLoader, startMethod, endMethod, startClass, endClass));
+        _components.add(new Component(id_counter, componentPath, classLoader, startMethod, endMethod, startClass, endClass));
         System.out.println("Deployed Component: " + _components.get(_components.size()-1).toString());
+
+        id_counter += 1;
+
         return true;
     }
 
@@ -124,6 +128,7 @@ public class ComponentManager {
 
         component._thread = new Thread(component);
         component._thread.start();
+        component._componentState = ComponentState.ACTIVE;
 
         return true;
     }
@@ -141,14 +146,11 @@ public class ComponentManager {
             return false;
         }
 
-        component._componentState = ComponentState.STOP;
-
-        try {
-            Object test = component._endClass.getDeclaredConstructor().newInstance();
-            component._endMethod.invoke(test);
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            throw new RuntimeException(e);
+        if (!(component._thread.isAlive())){
+            System.out.println("error: Components Thread is not alive");
         }
+
+        component.stop();
 
         return true;
     }

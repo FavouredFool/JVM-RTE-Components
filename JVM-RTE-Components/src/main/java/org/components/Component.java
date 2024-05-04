@@ -35,13 +35,24 @@ public class Component implements Runnable {
 
     @Override
     public void run() {
-        _componentState = ComponentState.START;
-
         try {
             Object test = _startClass.getDeclaredConstructor().newInstance();
             _startMethod.invoke(test);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void stop() {
+
+        try {
+            Object test = _endClass.getDeclaredConstructor().newInstance();
+            _endMethod.invoke(test);
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+
+        _thread.interrupt();
+        _componentState = ComponentState.SLEEP;
     }
 }
