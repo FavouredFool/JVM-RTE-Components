@@ -53,7 +53,7 @@ public class CommandLineReader {
     void InterpretRTECommands(String verb,  String file) {
         switch (verb) {
             case "stop":
-                System.out.println("--- Power down RTE. Goodbye. ---");
+                System.out.println("--- Power down Runtime Environment. Goodbye. ---");
                 System.exit(0);
                 break;
         }
@@ -94,6 +94,6 @@ public class CommandLineReader {
         System.out.println("\"component start [componentID]\" --- starts the component.");
         System.out.println("\"component stop [componentID]\" --- stops the component.");
         System.out.println("\"component delete [componentID]\" --- deletes the component.");
-        System.out.println("\"rte stop\" --- stops the application.");
+        System.out.println("\"rte stop\" --- stops the Runtime Environment.");
     }
 }
