@@ -44,38 +44,29 @@ public class ComponentManager {
                 continue;
             }
 
-            String className = jarEntry.getName();
-            // -6 to remove .class ending
-            className = className.substring(0, className.length() - 6);
-            className = className.replace('/', '.');
+            String className = GetNameFromJarEntry(jarEntry);
 
-            try {
-                Class<?> loadedClass = classLoader.loadClass(className);
+            Class<?> loadedClass = LoadClassWithClassloader(classLoader, className);
 
-                Method localStartMethod = getMethodsAnnotatedWith(loadedClass, StartMethodAnnotation.class).stream().findFirst().orElse(null);
-                Method localEndMethod = getMethodsAnnotatedWith(loadedClass, StopMethodAnnotation.class).stream().findFirst().orElse(null);
-                Class<?> localStartClass =  loadedClass.isAnnotationPresent(StartClassAnnotation.class) ?  loadedClass : null;
-                Class<?> localEndClass =  loadedClass.isAnnotationPresent(StartClassAnnotation.class) ?  loadedClass : null;
+            Method localStartMethod = getMethodsAnnotatedWith(loadedClass, StartMethodAnnotation.class).stream().findFirst().orElse(null);
+            Method localEndMethod = getMethodsAnnotatedWith(loadedClass, StopMethodAnnotation.class).stream().findFirst().orElse(null);
+            Class<?> localStartClass =  loadedClass.isAnnotationPresent(StartClassAnnotation.class) ?  loadedClass : null;
+            Class<?> localEndClass =  loadedClass.isAnnotationPresent(StartClassAnnotation.class) ?  loadedClass : null;
 
-                if (localStartMethod != null) {
-                    startMethod = localStartMethod;
-                }
+            if (localStartMethod != null) {
+                startMethod = localStartMethod;
+            }
 
-                if (localEndMethod != null) {
-                    endMethod = localEndMethod;
-                }
+            if (localEndMethod != null) {
+                endMethod = localEndMethod;
+            }
 
-                if (localStartClass != null) {
-                    startClass = localStartClass;
-                }
+            if (localStartClass != null) {
+                startClass = localStartClass;
+            }
 
-                if (localEndClass != null) {
-                    endClass = localEndClass;
-                }
-
-            } catch (ClassNotFoundException ex) {
-                System.out.println("error: " + ex.getMessage());
-                return false;
+            if (localEndClass != null) {
+                endClass = localEndClass;
             }
         }
 
@@ -96,6 +87,21 @@ public class ComponentManager {
         id_counter += 1;
 
         return true;
+    }
+
+    public String GetNameFromJarEntry(JarEntry jarEntry) {
+        String className = jarEntry.getName();
+        // -6 to remove .class ending
+        className = className.substring(0, className.length() - 6);
+        return className.replace('/', '.');
+    }
+
+    public Class<?> LoadClassWithClassloader(ClassLoader classLoader, String className) {
+        try {
+            return classLoader.loadClass(className);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     // from https://stackoverflow.com/questions/6593597/java-seek-a-method-with-specific-annotation-and-its-annotation-element
@@ -211,5 +217,9 @@ public class ComponentManager {
             status = status.concat(component.toString() + "\n");
         }
         return status;
+    }
+
+    public List<Component> GetComponents() {
+        return _components;
     }
 }

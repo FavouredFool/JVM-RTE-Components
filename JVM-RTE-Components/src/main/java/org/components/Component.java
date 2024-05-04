@@ -54,4 +54,41 @@ public class Component implements Runnable {
 
         _thread.interrupt();
     }
+
+    public ComponentState get_componentState() {
+        return _componentState;
+    }
+
+    public int get_id() {
+        return _id;
+    }
+
+    public String get_path() {
+        return _path;
+    }
+
+    public ClassLoader get_classLoader() {
+        return _classLoader;
+    }
+
+    public Method get_startMethod() {
+        return _startMethod;
+    }
+
+    public Method get_endMethod() {
+        return _endMethod;
+    }
+
+    public Class<?> get_startClass() {
+        return _startClass;
+    }
+
+    public Class<?> get_endClass() {
+        return _endClass;
+    }
+
+    public Thread get_thread() {
+        return _thread;
+    }
+
 }
