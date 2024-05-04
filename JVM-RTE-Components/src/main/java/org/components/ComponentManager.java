@@ -151,6 +151,7 @@ public class ComponentManager {
         }
 
         component.stop();
+        component._componentState = ComponentState.SLEEP;
 
         return true;
     }

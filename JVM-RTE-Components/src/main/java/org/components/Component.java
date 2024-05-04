@@ -53,6 +53,5 @@ public class Component implements Runnable {
         }
 
         _thread.interrupt();
-        _componentState = ComponentState.SLEEP;
     }
 }

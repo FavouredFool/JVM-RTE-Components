@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.0.0">
+  <zoom_level>9</zoom_level>
+  <element>
+    <id>UMLSpecialState</id>
+    <coordinates>
+      <x>729</x>
+      <y>387</y>
+      <w>18</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>type=initial</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLState</id>
+    <coordinates>
+      <x>1233</x>
+      <y>171</y>
+      <w>216</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>Deploy Component</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>729</x>
+      <y>180</y>
+      <w>522</w>
+      <h>234</h>
+    </coordinates>
+    <panel_attributes>"component deploy [Path]"
+
+
+lt=-&gt;
+</panel_attributes>
+    <additional_attributes>10.0;240.0;40.0;240.0;40.0;20.0;560.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>495</x>
+      <y>378</y>
+      <w>252</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>application.jar started from CLI
+
+lt=-&gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;260.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>729</x>
+      <y>387</y>
+      <w>225</w>
+      <h>225</h>
+    </coordinates>
+    <panel_attributes>"component start [ID]"
+
+lt=-&gt;
+</panel_attributes>
+    <additional_attributes>10.0;10.0;40.0;10.0;40.0;230.0;230.0;230.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>504</x>
+      <y>387</y>
+      <w>252</w>
+      <h>81</h>
+    </coordinates>
+    <panel_attributes>"rte stop"
+
+lt=-&gt;
+</panel_attributes>
+    <additional_attributes>260.0;10.0;260.0;50.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLSpecialState</id>
+    <coordinates>
+      <x>495</x>
+      <y>423</y>
+      <w>18</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>type=final</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLSpecialState</id>
+    <coordinates>
+      <x>495</x>
+      <y>387</y>
+      <w>18</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>type=initial</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>729</x>
+      <y>387</y>
+      <w>225</w>
+      <h>117</h>
+    </coordinates>
+    <panel_attributes>"component stop [ID]"
+
+lt=-&gt;
+</panel_attributes>
+    <additional_attributes>10.0;10.0;40.0;10.0;40.0;90.0;230.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>729</x>
+      <y>306</y>
+      <w>225</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>"component delete [ID]"
+
+lt=-&gt;
+</panel_attributes>
+    <additional_attributes>10.0;100.0;40.0;100.0;40.0;20.0;230.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>729</x>
+      <y>378</y>
+      <w>522</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>"component status"
+
+lt=-&gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;560.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLSpecialState</id>
+    <coordinates>
+      <x>936</x>
+      <y>306</y>
+      <w>36</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>type=decision</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLState</id>
+    <coordinates>
+      <x>1233</x>
+      <y>297</y>
+      <w>216</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>Delete Component</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLState</id>
+    <coordinates>
+      <x>1233</x>
+      <y>369</y>
+      <w>216</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>Print Status of all Components</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>963</x>
+      <y>306</y>
+      <w>288</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>[[ComponentState is SLEEP]]
+
+lt=-&gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;300.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>945</x>
+      <y>252</y>
+      <w>702</w>
+      <h>162</h>
+    </coordinates>
+    <panel_attributes>[[ComponentState is ACTIVE]]
+
+lt=-&gt;</panel_attributes>
+    <additional_attributes>10.0;60.0;10.0;20.0;680.0;20.0;680.0;160.0;760.0;160.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1440</x>
+      <y>387</y>
+      <w>207</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;210.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1440</x>
+      <y>315</y>
+      <w>207</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;130.0;10.0;130.0;90.0;210.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLSpecialState</id>
+    <coordinates>
+      <x>936</x>
+      <y>450</y>
+      <w>36</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>type=decision</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLState</id>
+    <coordinates>
+      <x>1233</x>
+      <y>441</y>
+      <w>216</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>Stop Component</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>963</x>
+      <y>450</y>
+      <w>288</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>
+lt=-&gt;
+[[ComponentState is ACTIVE]]
+</panel_attributes>
+    <additional_attributes>10.0;20.0;300.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1440</x>
+      <y>387</y>
+      <w>207</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;</panel_attributes>
+    <additional_attributes>10.0;90.0;130.0;90.0;130.0;10.0;210.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>945</x>
+      <y>387</y>
+      <w>702</w>
+      <h>171</h>
+    </coordinates>
+    <panel_attributes>
+lt=-&gt;
+[[ComponentState is SLEEP]]
+</panel_attributes>
+    <additional_attributes>10.0;110.0;10.0;150.0;680.0;150.0;680.0;10.0;760.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLState</id>
+    <coordinates>
+      <x>1233</x>
+      <y>567</y>
+      <w>216</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>Start Component</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLSpecialState</id>
+    <coordinates>
+      <x>936</x>
+      <y>576</y>
+      <w>36</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>type=decision</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>963</x>
+      <y>576</y>
+      <w>288</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>
+lt=-&gt;
+[[ComponentState is SLEEP]]
+</panel_attributes>
+    <additional_attributes>10.0;20.0;300.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1440</x>
+      <y>387</y>
+      <w>207</w>
+      <h>225</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;</panel_attributes>
+    <additional_attributes>10.0;230.0;130.0;230.0;130.0;10.0;210.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>945</x>
+      <y>387</y>
+      <w>702</w>
+      <h>306</h>
+    </coordinates>
+    <panel_attributes>
+lt=-&gt;
+[[ComponentState is ACTIVE]]
+</panel_attributes>
+    <additional_attributes>10.0;250.0;10.0;300.0;680.0;300.0;680.0;10.0;760.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1440</x>
+      <y>189</y>
+      <w>207</w>
+      <h>225</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;130.0;10.0;130.0;230.0;210.0;230.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>684</x>
+      <y>117</y>
+      <w>963</w>
+      <h>297</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;</panel_attributes>
+    <additional_attributes>1050.0;310.0;1050.0;10.0;10.0;10.0;10.0;270.0;60.0;270.0;60.0;300.0</additional_attributes>
+  </element>
+</diagram>
