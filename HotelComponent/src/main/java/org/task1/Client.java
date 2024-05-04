@@ -10,8 +10,6 @@ public class Client {
 
     @StartMethodAnnotation
     public void startComponent() {
-        System.out.println("\n--- \"Hello, World!\" says the hotel-component.\n");
-
         // Creates hotelRetrieval.
         HotelRetrieval hotelRetrieval = new HotelRetrieval();
 
@@ -28,28 +26,13 @@ public class Client {
         // Simulates how an extern client (outside of the component) would use hotelSearch.
         hotelSearchProxy.openSession();
 
-        List<Hotel> result = hotelSearchProxy.getHotelsByName("");
-
-        System.out.println("Find all hotels:");
-
-        for ( Hotel str : result ){
-            System.out.println( str );
-        }
-
-        //cacheReferenceProxy.ClearCache();
-
-        System.out.println("\nFind all hotels who's name contains the String \"Hotel\":");
-
-        List<Hotel> resultCached = hotelSearchProxy.getHotelsByName("Hotel");
-        for ( Hotel str : resultCached ){
-            System.out.println( str );
-        }
+        RepeatingRetrieval.InitialRetrieval(hotelSearchProxy);
 
         hotelSearchProxy.closeSession();
     }
 
     @StopMethodAnnotation
     public void endComponent() {
-        System.out.println("\n--- \"Goodbye, World.\" says the hotel-component.\n");
+        RepeatingRetrieval.StopRetrieval();
     }
 }

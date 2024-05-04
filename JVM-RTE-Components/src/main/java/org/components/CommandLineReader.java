@@ -82,12 +82,13 @@ public class CommandLineReader {
     }
 
     void WriteTutorial() {
-        System.out.println("--- This is a component-based Java-Runtime-Environment. ---");
+        System.out.println("--- This is Runtime-Environment for component deployment. ---");
+        System.out.println("--- Active Components print to console every 10 seconds. ---");
         System.out.println();
         System.out.println("--- Commands: ---");
         System.out.println();
         System.out.println("\"component deploy [path to .jar]\" --- deploys the component from a local folder.");
-        System.out.println("(The path can be both an absolute path like \"D:/HotelComponent.jar\" or a relative path like \"src/main/resources/HotelComponent.jar\").");
+        System.out.println("(The path can be both an absolute path like \"D:/HotelComponent.jar\" or a relative path like \"../HotelComponent.jar\").");
         System.out.println("\"component status\" --- logs every component's status.");
         System.out.println("\"component status [componentID]\" --- logs the component's status.");
         System.out.println("\"component start [componentID]\" --- starts the component.");
