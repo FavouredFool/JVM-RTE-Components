@@ -1,8 +1,9 @@
 package org.components;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public class Component {
+public class Component implements Runnable {
 
     ComponentState _componentState;
     int _id;
@@ -12,6 +13,7 @@ public class Component {
     Method _endMethod;
     Class<?> _startClass;
     Class<?> _endClass;
+    Thread _thread;
 
 
 
@@ -29,5 +31,17 @@ public class Component {
 
     public String toString() {
         return "[Component(ID: " + _id + ", State: " + _componentState + ", Path: " + _path + ")]";
+    }
+
+    @Override
+    public void run() {
+        _componentState = ComponentState.START;
+
+        try {
+            Object test = _startClass.getDeclaredConstructor().newInstance();
+            _startMethod.invoke(test);
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

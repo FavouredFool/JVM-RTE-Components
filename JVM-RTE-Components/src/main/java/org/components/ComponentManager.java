@@ -122,20 +122,8 @@ public class ComponentManager {
             return false;
         }
 
-        component._componentState = ComponentState.START;
-
-        Object test = null;
-        try {
-            test = component._startClass.getDeclaredConstructor().newInstance();
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        }
-
-        try {
-            component._startMethod.invoke(test);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e);
-        }
+        component._thread = new Thread(component);
+        component._thread.start();
 
         return true;
     }
@@ -155,16 +143,10 @@ public class ComponentManager {
 
         component._componentState = ComponentState.STOP;
 
-        Object test = null;
         try {
-            test = component._endClass.getDeclaredConstructor().newInstance();
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        }
-
-        try {
+            Object test = component._endClass.getDeclaredConstructor().newInstance();
             component._endMethod.invoke(test);
-        } catch (IllegalAccessException | InvocationTargetException e) {
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
 
