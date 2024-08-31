@@ -1,5 +1,9 @@
 package org.components;
 
+import org.logging.InjectAnnotation;
+import org.logging.Logger;
+
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -11,23 +15,44 @@ public class Component implements Runnable {
     ClassLoader _classLoader;
     Method _startMethod;
     Method _endMethod;
-    Class<?> _startClass;
-    Class<?> _endClass;
+    Class<?> _componentClass;
     Thread _thread;
 
 
 
-    public Component(int id, String path, ClassLoader classLoader, Method startMethod, Method endMethod, Class<?> startClass, Class<?> endClass){
+    public Component(int id, String path, ClassLoader classLoader, Method startMethod, Method endMethod, Class<?> componentClass){
         _componentState = ComponentState.SLEEP;
         _path = path;
         _id = id;
         _classLoader = classLoader;
         _startMethod = startMethod;
         _endMethod = endMethod;
-        _startClass = startClass;
-        _endClass = endClass;
+        _componentClass = componentClass;
     }
 
+    Object _startClassInstance;
+
+    public void injectLogger(Object instance) {
+
+        for (Field field : _componentClass.getDeclaredFields()){
+
+            if (field.isAnnotationPresent(InjectAnnotation.class))
+            {
+                field.setAccessible(true);
+
+                try {
+                    field.set(instance, (Logger)new Logger());
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+
+                break;
+            }
+
+        }
+
+        System.out.println("Injected Logger");
+    }
 
     public String toString() {
         return "[Component(ID: " + _id + ", State: " + _componentState + ", Path: " + _path + ")]";
@@ -36,8 +61,9 @@ public class Component implements Runnable {
     @Override
     public void run() {
         try {
-            Object test = _startClass.getDeclaredConstructor().newInstance();
-            _startMethod.invoke(test);
+            _startClassInstance = _componentClass.getDeclaredConstructor().newInstance();
+            injectLogger(_startClassInstance);
+            _startMethod.invoke(_startClassInstance);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
@@ -46,9 +72,8 @@ public class Component implements Runnable {
     public void stop() {
 
         try {
-            Object test = _endClass.getDeclaredConstructor().newInstance();
-            _endMethod.invoke(test);
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            _endMethod.invoke(_startClassInstance);
+        } catch (IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
 
@@ -79,12 +104,8 @@ public class Component implements Runnable {
         return _endMethod;
     }
 
-    public Class<?> get_startClass() {
-        return _startClass;
-    }
-
-    public Class<?> get_endClass() {
-        return _endClass;
+    public Class<?> get_componentClass() {
+        return _componentClass;
     }
 
     public Thread get_thread() {

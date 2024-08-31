@@ -33,8 +33,7 @@ public class ComponentManager {
 
         Method startMethod = null;
         Method endMethod = null;
-        Class<?> startClass = null;
-        Class<?> endClass = null;
+        Class<?> componentClass = null;
 
         while (jarEntries.hasMoreElements()) {
             JarEntry jarEntry = jarEntries.nextElement();
@@ -52,29 +51,25 @@ public class ComponentManager {
 
             if (localStartMethod != null) {
                 startMethod = localStartMethod;
-                startClass = startMethod.getClass();
+                componentClass = startMethod.getDeclaringClass();
             }
 
             if (localEndMethod != null) {
                 endMethod = localEndMethod;
-                endClass = endMethod.getClass();
             }
 
             if (startMethod != null && endMethod != null) break;
         }
 
-        if (startClass == null || endClass == null) {
+        if (componentClass == null) {
             System.out.println("error: Couldn't find start or end class");
             return false;
         }
 
-        if (startMethod == null || endMethod == null) {
-            System.out.println("error: Couldn't find start or end method");
-            return false;
-        }
-
         // Create new Component and add it to list
-        _components.add(new Component(id_counter, componentPath, classLoader, startMethod, endMethod, startClass, endClass));
+        Component component = new Component(id_counter, componentPath, classLoader, startMethod, endMethod, componentClass);
+        _components.add(component);
+
         System.out.println("Deployed Component: " + _components.get(_components.size()-1).toString());
 
         id_counter += 1;
