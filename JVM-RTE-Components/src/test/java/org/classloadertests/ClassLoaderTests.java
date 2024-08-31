@@ -16,11 +16,11 @@ import static org.junit.jupiter.api.Assertions.fail;
 class ClassLoaderTests {
 
     @Test
-    void TestComponentLoading() {
+    void testComponentLoading() {
         // Tests if components could be loaded
         ComponentManager componentManager = new ComponentManager();
-        Assertions.assertTrue(componentManager.LoadJar("src/main/resources/tests/GreetingComponent.jar"));
-        Assertions.assertTrue(componentManager.LoadJar("src/main/resources/tests/HotelComponent.jar"));
+        Assertions.assertTrue(componentManager.loadJar("src/main/resources/tests/GreetingComponent.jar"));
+        Assertions.assertTrue(componentManager.loadJar("src/main/resources/tests/HotelComponent.jar"));
     }
 
 
@@ -29,9 +29,9 @@ class ClassLoaderTests {
         // Tests if the loaded Components have their required parameters set
         String path = "src/main/resources/tests/HotelComponent.jar";
         ComponentManager componentManager = new ComponentManager();
-        Assertions.assertTrue(componentManager.LoadJar(path));
+        Assertions.assertTrue(componentManager.loadJar(path));
 
-        List<Component> components = componentManager.GetComponents();
+        List<Component> components = componentManager.getComponents();
         Assertions.assertFalse(components.isEmpty());
 
         Component component = components.get(0);
@@ -73,11 +73,11 @@ class ClassLoaderTests {
                 continue;
             }
 
-            String className = componentManager.GetNameFromJarEntry(jarEntry);
+            String className = componentManager.getNameFromJarEntry(jarEntry);
 
             // Load every class with both classloaders and compare them
-            Class<?> loadedClass1 = componentManager.LoadClassWithClassloader(classLoader1, className);
-            Class<?> loadedClass2 = componentManager.LoadClassWithClassloader(classLoader2, className);
+            Class<?> loadedClass1 = componentManager.loadClassWithClassloader(classLoader1, className);
+            Class<?> loadedClass2 = componentManager.loadClassWithClassloader(classLoader2, className);
 
             // if they're equal, they cant be uniquely identified through the classloaders -> failure
             Assertions.assertNotSame(loadedClass1, loadedClass2);

@@ -8,8 +8,8 @@ public class RTEManager {
         _componentManager = new ComponentManager();
     }
 
-    public void Deploy(String componentPath) {
-        if (_componentManager.LoadJar(componentPath)){
+    public void deploy(String componentPath) {
+        if (_componentManager.loadJar(componentPath)){
             System.out.println(componentPath + " successfully loaded.");
         }
         else {
@@ -18,10 +18,10 @@ public class RTEManager {
 
     }
 
-    public void Start(String componentId){
+    public void start(String componentId){
         boolean success;
         try {
-            success = _componentManager.StartComponent(Integer.parseInt(componentId));
+            success = _componentManager.startComponent(Integer.parseInt(componentId));
         }
         catch(Exception e) {
             System.out.println("error: Enter an ID, not a name.");
@@ -37,10 +37,10 @@ public class RTEManager {
         }
     }
 
-    public void Stop(String componentId){
+    public void stop(String componentId){
         boolean success;
         try {
-            success = _componentManager.StopComponent(Integer.parseInt(componentId));
+            success = _componentManager.stopComponent(Integer.parseInt(componentId));
         }
         catch(Exception e) {
             System.out.println("error: Enter an ID, not a name.");
@@ -55,10 +55,10 @@ public class RTEManager {
         }
     }
 
-    public void Delete(String componentId){
+    public void delete(String componentId){
         boolean success;
         try {
-            success = _componentManager.DeleteComponent(Integer.parseInt(componentId));
+            success = _componentManager.deleteComponent(Integer.parseInt(componentId));
         }
         catch(Exception e) {
             System.out.println("error: Enter an ID, not a name.");
@@ -73,7 +73,7 @@ public class RTEManager {
         }
     }
 
-    public void Status(String componentId){
+    public void status(String componentId){
         if (componentId.isEmpty()){
             System.out.println("Status for all Components:");
         }
@@ -81,6 +81,6 @@ public class RTEManager {
             System.out.println("Status for Component with ID " + componentId + ":");
         }
 
-        System.out.println(_componentManager.GetComponentStatus(componentId));
+        System.out.println(_componentManager.getComponentStatus(componentId));
     }
 }

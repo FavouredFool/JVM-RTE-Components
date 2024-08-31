@@ -1,7 +1,6 @@
 package org.components;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -15,7 +14,7 @@ public class ComponentManager {
     List<Component> _components = new ArrayList<>();
     static int id_counter = 0;
 
-    public boolean LoadJar(String componentPath) {
+    public boolean loadJar(String componentPath) {
 
         //String pathToJar = "src/main/resources/components/" + fileName;
         Enumeration<JarEntry> jarEntries = null;
@@ -44,30 +43,24 @@ public class ComponentManager {
                 continue;
             }
 
-            String className = GetNameFromJarEntry(jarEntry);
+            String className = getNameFromJarEntry(jarEntry);
 
-            Class<?> loadedClass = LoadClassWithClassloader(classLoader, className);
+            Class<?> loadedClass = loadClassWithClassloader(classLoader, className);
 
             Method localStartMethod = getMethodsAnnotatedWith(loadedClass, StartMethodAnnotation.class).stream().findFirst().orElse(null);
             Method localEndMethod = getMethodsAnnotatedWith(loadedClass, StopMethodAnnotation.class).stream().findFirst().orElse(null);
-            Class<?> localStartClass =  loadedClass.isAnnotationPresent(StartClassAnnotation.class) ?  loadedClass : null;
-            Class<?> localEndClass =  loadedClass.isAnnotationPresent(StartClassAnnotation.class) ?  loadedClass : null;
 
             if (localStartMethod != null) {
                 startMethod = localStartMethod;
+                startClass = startMethod.getClass();
             }
 
             if (localEndMethod != null) {
                 endMethod = localEndMethod;
+                endClass = endMethod.getClass();
             }
 
-            if (localStartClass != null) {
-                startClass = localStartClass;
-            }
-
-            if (localEndClass != null) {
-                endClass = localEndClass;
-            }
+            if (startMethod != null && endMethod != null) break;
         }
 
         if (startClass == null || endClass == null) {
@@ -89,14 +82,14 @@ public class ComponentManager {
         return true;
     }
 
-    public String GetNameFromJarEntry(JarEntry jarEntry) {
+    public String getNameFromJarEntry(JarEntry jarEntry) {
         String className = jarEntry.getName();
         // -6 to remove .class ending
         className = className.substring(0, className.length() - 6);
         return className.replace('/', '.');
     }
 
-    public Class<?> LoadClassWithClassloader(ClassLoader classLoader, String className) {
+    public Class<?> loadClassWithClassloader(ClassLoader classLoader, String className) {
         try {
             return classLoader.loadClass(className);
         } catch (ClassNotFoundException e) {
@@ -119,7 +112,7 @@ public class ComponentManager {
         return methods;
     }
 
-    public boolean StartComponent(int componentId) {
+    public boolean startComponent(int componentId) {
         Component component = _components.stream().filter(e -> e._id == componentId).findFirst().orElse(null);
 
         if (component == null) {
@@ -139,7 +132,7 @@ public class ComponentManager {
         return true;
     }
 
-    public boolean StopComponent(int componentId) {
+    public boolean stopComponent(int componentId) {
         Component component = _components.stream().filter(e -> e._id == componentId).findFirst().orElse(null);
 
         if (component == null) {
@@ -162,7 +155,7 @@ public class ComponentManager {
         return true;
     }
 
-    public boolean DeleteComponent(int componentId) {
+    public boolean deleteComponent(int componentId) {
         Component component = _components.stream().filter(e -> e._id == componentId).findFirst().orElse(null);
 
         if (component == null) {
@@ -180,15 +173,15 @@ public class ComponentManager {
         return true;
     }
 
-    public String GetComponentStatus(String componentId) {
+    public String getComponentStatus(String componentId) {
         String status = "";
 
         if (componentId.isEmpty()){
-            status = GetComponentStatusAll();
+            status = getComponentStatusAll();
         }
         else {
             try{
-                status = GetComponentStatusById(Integer.parseInt(componentId));
+                status = getComponentStatusById(Integer.parseInt(componentId));
             }
             catch (Exception e){
                 System.out.println("error: Enter an ID, not a name.");
@@ -202,7 +195,7 @@ public class ComponentManager {
         return status;
     }
 
-    public String GetComponentStatusById(int componentId) {
+    public String getComponentStatusById(int componentId) {
         for (Component component : _components) {
             if (component._id == componentId){
                 return component.toString();
@@ -211,7 +204,7 @@ public class ComponentManager {
         return "";
     }
 
-    public String GetComponentStatusAll() {
+    public String getComponentStatusAll() {
         String status = "";
         for (Component component : _components) {
             status = status.concat(component.toString() + "\n");
@@ -219,7 +212,7 @@ public class ComponentManager {
         return status;
     }
 
-    public List<Component> GetComponents() {
+    public List<Component> getComponents() {
         return _components;
     }
 }

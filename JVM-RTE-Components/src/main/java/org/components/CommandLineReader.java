@@ -13,9 +13,9 @@ public class CommandLineReader {
         _rteManager = rteManager;
     }
 
-    public void ReadFromCommandLine() {
+    public void readFromCommandLine() {
 
-        WriteTutorial();
+        writeTutorial();
 
         // https://www.innoq.com/de/articles/2017/10/java-command-line-interfaces/
         try (BufferedReader in = new BufferedReader(new InputStreamReader(System.in))) {
@@ -25,14 +25,14 @@ public class CommandLineReader {
                 if (line == null) break;
                 if (line.equals("exit")) break;
 
-                InterpretCommand(line);
+                interpretCommand(line);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    void InterpretCommand(String line) {
+    void interpretCommand(String line) {
         String[] parts = line.split(" ");
         if (parts.length < 2 || parts.length > 3) return;
 
@@ -42,15 +42,15 @@ public class CommandLineReader {
 
         switch (parts[0]) {
             case "rte":
-                InterpretRTECommands(verb, file);
+                interpretRTECommands(verb, file);
                 break;
             case "component":
-                InterpretComponentCommand(verb, file);
+                interpretComponentCommand(verb, file);
                 break;
         }
     }
 
-    void InterpretRTECommands(String verb,  String file) {
+    void interpretRTECommands(String verb, String file) {
         switch (verb) {
             case "stop":
                 System.out.println("--- Power down Runtime Environment. Goodbye. ---");
@@ -59,29 +59,29 @@ public class CommandLineReader {
         }
     }
 
-    void InterpretComponentCommand(String verb,  String file) {
+    void interpretComponentCommand(String verb, String file) {
 
         switch (verb) {
             case "deploy":
-                _rteManager.Deploy(file);
+                _rteManager.deploy(file);
                 break;
             case "start":
-                _rteManager.Start(file);
+                _rteManager.start(file);
                 break;
             case "stop":
-                _rteManager.Stop(file);
+                _rteManager.stop(file);
                 break;
             case "status":
-                _rteManager.Status(file);
+                _rteManager.status(file);
                 break;
             case "delete":
-                _rteManager.Delete(file);
+                _rteManager.delete(file);
                 break;
             default: return;
         }
     }
 
-    void WriteTutorial() {
+    void writeTutorial() {
         System.out.println("--- This is Runtime-Environment for component deployment. ---");
         System.out.println("--- Active Components print to console every 10 seconds. ---");
         System.out.println();

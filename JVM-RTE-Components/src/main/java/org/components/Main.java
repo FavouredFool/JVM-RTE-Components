@@ -18,7 +18,7 @@ public class Main {
         CommandLineReader reader = new CommandLineReader(rteManager);
 
         // this blocks the main Thread forever
-        reader.ReadFromCommandLine();
+        reader.readFromCommandLine();
     }
 
 }
