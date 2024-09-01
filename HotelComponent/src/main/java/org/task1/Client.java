@@ -1,15 +1,21 @@
 package org.task1;
 
 import org.componentannotations.*;
-
+import org.logging.*;
 import java.util.List;
 
-@StartClassAnnotation
-@StopClassAnnotation
 public class Client {
+
+    @InjectAnnotation
+    private Logger myLog;
 
     @StartMethodAnnotation
     public void startComponent() {
+
+        if (myLog != null){
+            myLog.printMessage("Meldung aus HotelComponent: Prozess gestartet");
+        }
+
         // Creates hotelRetrieval.
         HotelRetrieval hotelRetrieval = new HotelRetrieval();
 
@@ -33,6 +39,11 @@ public class Client {
 
     @StopMethodAnnotation
     public void endComponent() {
+
+        if (myLog != null){
+            myLog.printMessage("Meldung aus HotelComponent: Prozess beendet");
+        }
+
         RepeatingRetrieval.StopRetrieval();
     }
 }

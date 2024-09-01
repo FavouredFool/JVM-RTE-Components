@@ -25,6 +25,11 @@
             <artifactId>ComponentAnnotations</artifactId>
             <version>1.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.components</groupId>
+            <artifactId>JVM-RTE-Components</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 
 

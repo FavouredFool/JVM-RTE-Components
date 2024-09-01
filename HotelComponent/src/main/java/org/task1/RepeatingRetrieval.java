@@ -15,8 +15,6 @@ public class RepeatingRetrieval {
 
         List<Hotel> result = hotelSearchProxy.getHotelsByName("");
 
-        System.out.println("Find all hotels:");
-
         for ( Hotel str : result ){
             System.out.println( str );
         }
@@ -30,7 +28,7 @@ public class RepeatingRetrieval {
         for (int i = 0; i < Integer.MAX_VALUE; i++) {
             String query = _queries[ThreadLocalRandom.current().nextInt(0, _queries.length)];
 
-            System.out.println("Hotel Component: Continuous Retrieval by Name! [Name: '" + query + "']");
+            System.out.println("Hotel Component: Continuous Retrieval by Name [Name: '" + query + "']");
 
             //System.out.println("\nFind all hotels who's name contains the String \"Hotel\":");
 
@@ -46,7 +44,6 @@ public class RepeatingRetrieval {
             }
 
             if (_isStop){
-                System.out.println("Hotel Component: Stopping!");
                 break;
             }
 
