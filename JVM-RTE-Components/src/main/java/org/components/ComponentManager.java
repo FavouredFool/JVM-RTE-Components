@@ -1,5 +1,7 @@
 package org.components;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -8,13 +10,16 @@ import java.util.*;
 import java.util.jar.JarFile;
 import java.util.jar.JarEntry;
 import org.componentannotations.*;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
 public class ComponentManager {
 
     List<Component> _components = new ArrayList<>();
     static int id_counter = 0;
 
-    public boolean loadJar(String relativePath) {
+    public boolean loadJar(String relativePath, int existingID) {
 
         //String pathToJar = "src/main/resources/components/" + fileName;
         Enumeration<JarEntry> jarEntries = null;
@@ -69,7 +74,17 @@ public class ComponentManager {
         }
 
         // Create new Component and add it to list
-        Component component = new Component(id_counter, componentPath, classLoader, startMethod, endMethod, componentClass);
+        int id;
+
+        if (existingID == -1) {
+            id = id_counter;
+        }
+        else {
+            id = existingID;
+            id_counter = existingID;
+        }
+
+        Component component = new Component(id, componentPath, classLoader, startMethod, endMethod, componentClass);
         _components.add(component);
 
         System.out.println("Deployed Component: " + _components.get(_components.size()-1).toString());
@@ -77,6 +92,41 @@ public class ComponentManager {
         id_counter += 1;
 
         return true;
+    }
+
+    public void load(String saveFilePath) {
+
+        if (!_components.isEmpty()) {
+            System.out.println("Error: Components are not empty");
+            return;
+        }
+
+        String fullPath = System.getProperty("user.dir") + "\\" + saveFilePath;
+
+        // From: https://www.digitalocean.com/community/tutorials/java-read-file-to-string
+        FileInputStream fis = null;
+        StringBuilder sb = new StringBuilder();
+        try {
+            fis = new FileInputStream(fullPath);
+            byte[] buffer = new byte[10];
+            while (fis.read(buffer) != -1) {
+                sb.append(new String(buffer));
+                buffer = new byte[10];
+            }
+            fis.close();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
+
+        System.out.println(sb.toString());
+        Object obj = JSONValue.parse(sb.toString());
+        System.out.println(obj.toString());
+        JSONArray array = (JSONArray) obj;
+        for (int i = 0; i < array.size(); i++){
+            JSONObject innerObj = (JSONObject)array.get(i);
+            loadJar((String)innerObj.get("1"), (int)innerObj.get("0"));
+        }
     }
 
     public String getNameFromJarEntry(JarEntry jarEntry) {

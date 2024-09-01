@@ -79,6 +79,10 @@ public class CommandLineReader {
                 break;
             case "save":
                 _rteManager.save();
+                break;
+            case "load":
+                _rteManager.load(file);
+                break;
             default: return;
         }
     }
@@ -96,6 +100,8 @@ public class CommandLineReader {
         System.out.println("\"component start [componentID]\" --- starts the component.");
         System.out.println("\"component stop [componentID]\" --- stops the component.");
         System.out.println("\"component delete [componentID]\" --- deletes the component.");
+        System.out.println("\"component save\" --- saves the component configuration.");
+        System.out.println("\"component load [jsonPath]\" --- loads a configuration from a json file.");
         System.out.println("\"rte stop\" --- stops the Runtime Environment.");
     }
 }

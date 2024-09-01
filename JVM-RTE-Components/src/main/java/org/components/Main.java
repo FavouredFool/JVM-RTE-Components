@@ -17,6 +17,8 @@ public class Main {
         RTEManager rteManager = new RTEManager();
         CommandLineReader reader = new CommandLineReader(rteManager);
 
+        rteManager.writeJson(false);
+
         // this blocks the main Thread forever
         reader.readFromCommandLine();
     }

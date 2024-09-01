@@ -1,9 +1,10 @@
 package org.components;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -17,13 +18,17 @@ public class RTEManager {
     }
 
     public void deploy(String componentPath) {
-        if (_componentManager.loadJar(componentPath)){
+        if (_componentManager.loadJar(componentPath, -1)){
             System.out.println(componentPath + " successfully loaded.");
             writeJson(false);
         }
         else {
             System.out.println(componentPath + " could not be loaded.");
         }
+    }
+
+    public void load(String saveFilePath){
+        _componentManager.load(saveFilePath);
     }
 
     public void save(){
@@ -57,7 +62,7 @@ public class RTEManager {
                 file = new FileWriter(System.getProperty("user.dir") + "/[" + formattedNow + "]_" + saveFileName + ".json");
             }
             else {
-                file = new FileWriter(System.getProperty("user.dir") + "/[temp]_" + saveFileName + ".json");
+                file = new FileWriter(System.getProperty("user.dir") + "/" + saveFileName + ".json");
             }
 
             file.write(jsonObject.toJSONString());
