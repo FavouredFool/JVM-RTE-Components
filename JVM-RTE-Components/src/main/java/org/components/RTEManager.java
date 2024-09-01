@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 public class RTEManager {
 
     ComponentManager _componentManager;
-    static String saveFileName = "componentConfiguration";
+    static String saveFileName = "savedConfiguration";
 
     public RTEManager() {
         _componentManager = new ComponentManager();
@@ -19,16 +19,19 @@ public class RTEManager {
     public void deploy(String componentPath) {
         if (_componentManager.loadJar(componentPath)){
             System.out.println(componentPath + " successfully loaded.");
-            writeJson();
+            writeJson(false);
         }
         else {
             System.out.println(componentPath + " could not be loaded.");
         }
-
-
     }
 
-    public void writeJson(){
+    public void save(){
+        writeJson(true);
+        System.out.println("Saved configuration");
+    }
+
+    public void writeJson(boolean withTimeStamp){
 
         //From: https://stackoverflow.com/questions/23068676/how-to-get-current-timestamp-in-string-format-in-java-yyyy-mm-dd-hh-mm-ss
         // Get the current date and time
@@ -40,7 +43,6 @@ public class RTEManager {
         // Format the current date and time
         String formattedNow = now.format(formatter);
 
-
         // From: https://www.tutorialspoint.com/how-to-write-create-a-json-file-using-java
 
         JSONObject jsonObject = new JSONObject();
@@ -51,7 +53,13 @@ public class RTEManager {
 
         FileWriter file = null;
         try {
-            file = new FileWriter(System.getProperty("user.dir") + "/[" + formattedNow + "]" + saveFileName + ".json");
+            if (withTimeStamp){
+                file = new FileWriter(System.getProperty("user.dir") + "/[" + formattedNow + "]_" + saveFileName + ".json");
+            }
+            else {
+                file = new FileWriter(System.getProperty("user.dir") + "/[temp]_" + saveFileName + ".json");
+            }
+
             file.write(jsonObject.toJSONString());
             file.close();
         } catch (IOException e) {
@@ -108,7 +116,7 @@ public class RTEManager {
 
         if (success) {
             System.out.println("Component with ID " + componentId + " successfully deleted.");
-            writeJson();
+            writeJson(false);
         }
         else {
             System.out.println("Component with ID " + componentId + " could not be deleted.");

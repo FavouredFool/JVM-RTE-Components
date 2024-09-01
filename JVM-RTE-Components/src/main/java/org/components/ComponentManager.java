@@ -21,7 +21,6 @@ public class ComponentManager {
         URLClassLoader classLoader = null;
 
         String componentPath = System.getProperty("user.dir") + "\\" + relativePath;
-        System.out.println(componentPath);
 
         try {
             JarFile jarFile = new JarFile(componentPath);

@@ -77,6 +77,8 @@ public class CommandLineReader {
             case "delete":
                 _rteManager.delete(file);
                 break;
+            case "save":
+                _rteManager.save();
             default: return;
         }
     }
