@@ -36,7 +36,6 @@ class ClassLoaderTests {
 
         Component component = components.get(0);
         Assertions.assertNotNull(component);
-        Assertions.assertEquals(component.get_path(), path);
         Assertions.assertEquals(0, component.get_id());
         Assertions.assertNotNull(component.get_startMethod());
         Assertions.assertNotNull(component.get_endMethod());

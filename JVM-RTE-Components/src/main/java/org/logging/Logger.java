@@ -6,9 +6,6 @@ import java.time.format.DateTimeFormatter;
 public class Logger {
 
     public void printMessage(String message) {
-        // timestamp hinzufügen?
-
-
         //From: https://stackoverflow.com/questions/23068676/how-to-get-current-timestamp-in-string-format-in-java-yyyy-mm-dd-hh-mm-ss
         // Get the current date and time
         LocalDateTime now = LocalDateTime.now();

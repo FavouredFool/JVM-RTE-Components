@@ -1,8 +1,16 @@
 package org.components;
 
+import org.json.simple.JSONObject;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class RTEManager {
 
     ComponentManager _componentManager;
+    static String saveFileName = "componentConfiguration";
 
     public RTEManager() {
         _componentManager = new ComponentManager();
@@ -11,11 +19,44 @@ public class RTEManager {
     public void deploy(String componentPath) {
         if (_componentManager.loadJar(componentPath)){
             System.out.println(componentPath + " successfully loaded.");
+            writeJson();
         }
         else {
             System.out.println(componentPath + " could not be loaded.");
         }
 
+
+    }
+
+    public void writeJson(){
+
+        //From: https://stackoverflow.com/questions/23068676/how-to-get-current-timestamp-in-string-format-in-java-yyyy-mm-dd-hh-mm-ss
+        // Get the current date and time
+        LocalDateTime now = LocalDateTime.now();
+
+        // Define the format
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
+
+        // Format the current date and time
+        String formattedNow = now.format(formatter);
+
+
+        // From: https://www.tutorialspoint.com/how-to-write-create-a-json-file-using-java
+
+        JSONObject jsonObject = new JSONObject();
+
+        for(Component component : _componentManager.getComponents()){
+            jsonObject.put(component.get_id(), component.get_path());
+        }
+
+        FileWriter file = null;
+        try {
+            file = new FileWriter(System.getProperty("user.dir") + "/[" + formattedNow + "]" + saveFileName + ".json");
+            file.write(jsonObject.toJSONString());
+            file.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void start(String componentId){
@@ -67,6 +108,7 @@ public class RTEManager {
 
         if (success) {
             System.out.println("Component with ID " + componentId + " successfully deleted.");
+            writeJson();
         }
         else {
             System.out.println("Component with ID " + componentId + " could not be deleted.");

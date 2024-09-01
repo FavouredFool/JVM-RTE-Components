@@ -14,11 +14,14 @@ public class ComponentManager {
     List<Component> _components = new ArrayList<>();
     static int id_counter = 0;
 
-    public boolean loadJar(String componentPath) {
+    public boolean loadJar(String relativePath) {
 
         //String pathToJar = "src/main/resources/components/" + fileName;
         Enumeration<JarEntry> jarEntries = null;
         URLClassLoader classLoader = null;
+
+        String componentPath = System.getProperty("user.dir") + "\\" + relativePath;
+        System.out.println(componentPath);
 
         try {
             JarFile jarFile = new JarFile(componentPath);
