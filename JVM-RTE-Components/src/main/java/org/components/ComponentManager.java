@@ -6,6 +6,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.jar.JarFile;
 import java.util.jar.JarEntry;
@@ -19,13 +21,20 @@ public class ComponentManager {
     List<Component> _components = new ArrayList<>();
     static int id_counter = 0;
 
-    public boolean loadJar(String relativePath, int existingID) {
+    public boolean loadJar(String path, int existingID, boolean isRelativePath) {
 
         //String pathToJar = "src/main/resources/components/" + fileName;
         Enumeration<JarEntry> jarEntries = null;
         URLClassLoader classLoader = null;
 
-        String componentPath = System.getProperty("user.dir") + "\\" + relativePath;
+        String componentPath;
+
+        if (isRelativePath) {
+            componentPath = System.getProperty("user.dir") + "\\" + path;
+        }
+        else {
+            componentPath = path;
+        }
 
         try {
             JarFile jarFile = new JarFile(componentPath);
@@ -103,29 +112,59 @@ public class ComponentManager {
 
         String fullPath = System.getProperty("user.dir") + "\\" + saveFilePath;
 
+        String content = "{}";
         // From: https://www.digitalocean.com/community/tutorials/java-read-file-to-string
-        FileInputStream fis = null;
-        StringBuilder sb = new StringBuilder();
         try {
-            fis = new FileInputStream(fullPath);
-            byte[] buffer = new byte[10];
-            while (fis.read(buffer) != -1) {
-                sb.append(new String(buffer));
-                buffer = new byte[10];
-            }
-            fis.close();
+            content = new String(Files.readAllBytes(Paths.get(fullPath)));
         } catch (IOException e) {
-            System.out.println(e.getMessage());
-            return;
+            throw new RuntimeException(e);
         }
 
-        System.out.println(sb.toString());
-        Object obj = JSONValue.parse(sb.toString());
-        System.out.println(obj.toString());
-        JSONArray array = (JSONArray) obj;
-        for (int i = 0; i < array.size(); i++){
-            JSONObject innerObj = (JSONObject)array.get(i);
-            loadJar((String)innerObj.get("1"), (int)innerObj.get("0"));
+        System.out.println(content);
+        JSONObject obj = (JSONObject)JSONValue.parse(content);
+
+        Set<Map.Entry<?, ?>> entrySet = obj.entrySet();
+
+        // Step to create a new set of Entry<Integer, String>
+        List<Map.Entry<Integer, String>> entryList = new ArrayList<>();
+
+        for (Map.Entry<?, ?> rawEntry : entrySet) {
+            Object key = rawEntry.getKey();
+            Object value = rawEntry.getValue();
+            Integer integerKey = null;
+
+            // Attempt to cast or convert the key to Integer
+            if (key instanceof Integer) {
+                integerKey = (Integer) key; // Key is already an Integer
+            } else if (key instanceof String) {
+                try {
+                    // Try to parse the String key to Integer
+                    integerKey = Integer.parseInt((String) key);
+                } catch (NumberFormatException e) {
+                    System.out.println("Cannot convert key to Integer: " + key);
+                }
+            } else {
+                System.out.println("Unsupported key type for conversion: " + key);
+            }
+
+            if (integerKey != null  && value instanceof String) {
+                // Safe to cast as we have checked the types
+                Map.Entry<Integer, String> castedEntry = new AbstractMap.SimpleEntry<>(integerKey, (String) value);
+                entryList.add(castedEntry);
+            } else {
+                System.out.println("Skipping entry due to incompatible types: " + rawEntry);
+            }
+        }
+
+        entryList.sort(Comparator.comparingInt(Map.Entry::getKey));
+
+        // Print out the successfully casted entries
+        for (Map.Entry<Integer, String> entry : entryList) {
+            System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue());
+        }
+
+        for (int i = 0; i < entryList.size(); i++){
+            loadJar(entryList.get(i).getValue(), entryList.get(i).getKey(), false);
         }
     }
 

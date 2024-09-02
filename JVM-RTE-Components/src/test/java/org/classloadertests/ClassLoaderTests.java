@@ -19,8 +19,8 @@ class ClassLoaderTests {
     void testComponentLoading() {
         // Tests if components could be loaded
         ComponentManager componentManager = new ComponentManager();
-        Assertions.assertTrue(componentManager.loadJar("src/main/resources/tests/GreetingComponent.jar", -1));
-        Assertions.assertTrue(componentManager.loadJar("src/main/resources/tests/HotelComponent.jar", -1));
+        Assertions.assertTrue(componentManager.loadJar("src/main/resources/tests/GreetingComponent.jar", -1, true));
+        Assertions.assertTrue(componentManager.loadJar("src/main/resources/tests/HotelComponent.jar", -1, true));
     }
 
 
@@ -29,7 +29,7 @@ class ClassLoaderTests {
         // Tests if the loaded Components have their required parameters set
         String path = "src/main/resources/tests/HotelComponent.jar";
         ComponentManager componentManager = new ComponentManager();
-        Assertions.assertTrue(componentManager.loadJar(path, -1));
+        Assertions.assertTrue(componentManager.loadJar(path, -1, true));
 
         List<Component> components = componentManager.getComponents();
         Assertions.assertFalse(components.isEmpty());
