@@ -15,18 +15,20 @@ public class Component implements Runnable {
     ClassLoader _classLoader;
     Method _startMethod;
     Method _endMethod;
+    Method _loadMethod;
     Class<?> _componentClass;
     Thread _thread;
 
 
 
-    public Component(int id, String path, ClassLoader classLoader, Method startMethod, Method endMethod, Class<?> componentClass){
+    public Component(int id, String path, ClassLoader classLoader, Method startMethod, Method endMethod, Method loadMethod, Class<?> componentClass){
         _componentState = ComponentState.SLEEP;
         _path = path;
         _id = id;
         _classLoader = classLoader;
         _startMethod = startMethod;
         _endMethod = endMethod;
+        _loadMethod = loadMethod;
         _componentClass = componentClass;
     }
 
@@ -80,6 +82,14 @@ public class Component implements Runnable {
         _thread.interrupt();
     }
 
+    public void processLoad() {
+        try {
+            _loadMethod.invoke(_startClassInstance);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public ComponentState get_componentState() {
         return _componentState;
     }
@@ -102,6 +112,10 @@ public class Component implements Runnable {
 
     public Method get_endMethod() {
         return _endMethod;
+    }
+
+    public Method get_loadMethod() {
+        return _loadMethod;
     }
 
     public Class<?> get_componentClass() {

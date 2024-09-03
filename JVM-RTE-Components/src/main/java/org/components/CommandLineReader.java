@@ -83,6 +83,9 @@ public class CommandLineReader {
             case "load":
                 _rteManager.load(file);
                 break;
+            case "stress":
+                _rteManager.stress();
+                break;
             default: return;
         }
     }
@@ -93,8 +96,7 @@ public class CommandLineReader {
         System.out.println();
         System.out.println("--- Commands: ---");
         System.out.println();
-        System.out.println("\"component deploy [path to .jar]\" --- deploys the component from a local folder.");
-        System.out.println("(The path can be both an absolute path like \"D:/HotelComponent.jar\" or a relative path like \"../HotelComponent.jar\").");
+        System.out.println("\"component deploy [relative path to .jar]\" --- deploys the component from a local folder.");
         System.out.println("\"component status\" --- logs every component's status.");
         System.out.println("\"component status [componentID]\" --- logs the component's status.");
         System.out.println("\"component start [componentID]\" --- starts the component.");
@@ -102,6 +104,7 @@ public class CommandLineReader {
         System.out.println("\"component delete [componentID]\" --- deletes the component.");
         System.out.println("\"component save\" --- saves the component configuration.");
         System.out.println("\"component load [jsonPath]\" --- loads a configuration from a json file.");
+        System.out.println("\"component stress\" --- attempts to put stress on a loadComponent if available.");
         System.out.println("\"rte stop\" --- stops the Runtime Environment.");
     }
 }

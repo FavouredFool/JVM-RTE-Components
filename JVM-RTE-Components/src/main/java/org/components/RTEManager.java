@@ -27,6 +27,10 @@ public class RTEManager {
         }
     }
 
+    public void stress() {
+        _componentManager.stressComponent();
+    }
+
     public void load(String saveFilePath){
         _componentManager.load(saveFilePath);
     }

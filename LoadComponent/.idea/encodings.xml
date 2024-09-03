@@ -5,13 +5,9 @@
     <file url="file://$PROJECT_DIR$/../AnnotationLibraryJVM/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../ComponentAnnotations/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../ComponentAnnotations/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../GreetingComponent/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../GreetingComponent/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../HotelComponent/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../HotelComponent/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../LoadComponent/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../LoadComponent/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../JVM-RTE-Components/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../JVM-RTE-Components/src/main/resources" charset="UTF-8" />
   </component>
 </project>

@@ -82,6 +82,9 @@ public class ComponentManager {
             return false;
         }
 
+        // find possible load-Method
+        Method loadMethod = getMethodsAnnotatedWith(componentClass, LoadMethodAnnotation.class).stream().findFirst().orElse(null);
+
         // Create new Component and add it to list
         int id;
 
@@ -93,7 +96,7 @@ public class ComponentManager {
             id_counter = existingID;
         }
 
-        Component component = new Component(id, componentPath, classLoader, startMethod, endMethod, componentClass);
+        Component component = new Component(id, componentPath, classLoader, startMethod, endMethod, loadMethod, componentClass);
         _components.add(component);
 
         System.out.println("Deployed Component: " + _components.get(_components.size()-1).toString());
@@ -257,6 +260,23 @@ public class ComponentManager {
         _components.remove(component);
 
         return true;
+    }
+
+    public void stressComponent(){
+        // as this is a loadbalancer, find all applicable components and choose one randomly
+        ArrayList<Component> loadComponents = new ArrayList<>();
+        for (Component component : _components) {
+            if (component.get_loadMethod() == null || component.get_componentState() == ComponentState.SLEEP) continue;
+            loadComponents.add(component);
+        }
+
+        if (loadComponents.isEmpty()){
+            System.out.println("error: No component available");
+            return;
+        }
+
+        Component chosenComponent = loadComponents.get((int)(Math.random() * loadComponents.size()));
+        chosenComponent.processLoad();
     }
 
     public String getComponentStatus(String componentId) {
