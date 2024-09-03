@@ -19,7 +19,6 @@ public class RTEManager {
 
     public void deploy(String componentPath) {
         if (_componentManager.loadJar(componentPath, -1, true)){
-            System.out.println(componentPath + " successfully loaded.");
             writeJson(false);
         }
         else {

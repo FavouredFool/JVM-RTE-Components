@@ -15,6 +15,7 @@ public class Client {
         }
 
         LoadProcessor.prepareProcessing();
+        LoadProcessor.process(myLog);
     }
 
     @StopMethodAnnotation
@@ -28,22 +29,6 @@ public class Client {
 
     @LoadMethodAnnotation
     public void applyLoad() {
-
-        myLog.printMessage("Meldung aus LoadComponent: Load wurde gequeued [Position " + "X" +"]");
-
-        if (LoadProcessor._isProcessing) {
-            myLog.printMessage("Meldung aus LoadComponent: Load kann nicht verarbeitet werden [busy]");
-        }
-        else {
-            if (LoadProcessor.loadProcessing()){
-                myLog.printMessage("Meldung aus LoadComponent: Verarbeitung wurde abgeschlossen [success]");
-            }
-            else {
-                myLog.printMessage("Meldung aus LoadComponent: Verarbeitung wurde abgebrochen [stopped]");
-            }
-        }
-
-
-
+        LoadProcessor.queueProcessing(myLog);
     }
 }
