@@ -5,13 +5,18 @@ import org.logging.*;
 
 public class Client {
 
+    static int _componentID;
+
     @InjectAnnotation
     private Logger myLog;
 
     @StartMethodAnnotation
-    public void startComponent() {
+    public void startComponent(int componentID) {
+
+        _componentID = componentID;
+
         if (myLog != null){
-            myLog.printMessage("Meldung aus LoadComponent: Prozess gestartet");
+            myLog.printMessage("Meldung aus LoadComponent [ID: " + Client._componentID + "]: Prozess gestartet");
         }
 
         LoadProcessor.prepareProcessing();
@@ -21,14 +26,14 @@ public class Client {
     @StopMethodAnnotation
     public void endComponent() {
         if (myLog != null) {
-            myLog.printMessage("Meldung aus LoadComponent: Prozess beendet");
+            myLog.printMessage("Meldung aus LoadComponent [ID: " + Client._componentID + "]: Prozess beendet");
         }
 
         LoadProcessor.interruptProcessing();
     }
 
     @LoadMethodAnnotation
-    public void applyLoad() {
-        LoadProcessor.queueProcessing(myLog);
+    public void applyLoad(int stress) {
+        LoadProcessor.queueProcessing(myLog, stress);
     }
 }

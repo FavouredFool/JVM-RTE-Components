@@ -262,7 +262,7 @@ public class ComponentManager {
         return true;
     }
 
-    public void stressComponent(){
+    public void stressComponent(int stress){
         // as this is a loadbalancer, find all applicable components and choose one randomly
         ArrayList<Component> loadComponents = new ArrayList<>();
         for (Component component : _components) {
@@ -276,7 +276,7 @@ public class ComponentManager {
         }
 
         Component chosenComponent = loadComponents.get((int)(Math.random() * loadComponents.size()));
-        chosenComponent.processLoad();
+        chosenComponent.processLoad(stress);
     }
 
     public String getComponentStatus(String componentId) {

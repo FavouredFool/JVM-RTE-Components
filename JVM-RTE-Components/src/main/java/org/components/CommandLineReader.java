@@ -84,7 +84,7 @@ public class CommandLineReader {
                 _rteManager.load(file);
                 break;
             case "stress":
-                _rteManager.stress();
+                _rteManager.stress(file);
                 break;
             default: return;
         }

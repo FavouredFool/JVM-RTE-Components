@@ -26,8 +26,17 @@ public class RTEManager {
         }
     }
 
-    public void stress() {
-        _componentManager.stressComponent();
+    public void stress(String stressString) {
+
+        int stress;
+        try {
+            stress = Integer.parseInt(stressString);
+        } catch (NumberFormatException e) {
+            System.out.println("error: did not provide a length of stress (integer)");
+            return;
+        }
+
+        _componentManager.stressComponent(stress);
     }
 
     public void load(String saveFilePath){

@@ -6,14 +6,18 @@ import java.util.List;
 
 public class Client {
 
+    static int _componentID;
+
     @InjectAnnotation
     private Logger myLog;
 
     @StartMethodAnnotation
-    public void startComponent() {
+    public void startComponent(int componentID) {
+
+        _componentID = componentID;
 
         if (myLog != null){
-            myLog.printMessage("Meldung aus HotelComponent: Prozess gestartet");
+            myLog.printMessage("Meldung aus HotelComponent [ID: " + Client._componentID + "]: Prozess gestartet");
         }
 
         // Creates hotelRetrieval.
@@ -41,7 +45,7 @@ public class Client {
     public void endComponent() {
 
         if (myLog != null){
-            myLog.printMessage("Meldung aus HotelComponent: Prozess beendet");
+            myLog.printMessage("Meldung aus HotelComponent [ID: " + Client._componentID + "]: Prozess beendet");
         }
 
         RepeatingRetrieval.StopRetrieval();

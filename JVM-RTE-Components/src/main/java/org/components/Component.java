@@ -65,7 +65,7 @@ public class Component implements Runnable {
         try {
             _startClassInstance = _componentClass.getDeclaredConstructor().newInstance();
             injectLogger(_startClassInstance);
-            _startMethod.invoke(_startClassInstance);
+            _startMethod.invoke(_startClassInstance, _id);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
@@ -82,9 +82,9 @@ public class Component implements Runnable {
         _thread.interrupt();
     }
 
-    public void processLoad() {
+    public void processLoad(int stress) {
         try {
-            _loadMethod.invoke(_startClassInstance);
+            _loadMethod.invoke(_startClassInstance, stress);
         } catch (IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
