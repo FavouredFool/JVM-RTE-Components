@@ -2,6 +2,7 @@ package org.components;
 
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
+import org.logging.Logger;
 
 import java.io.*;
 import java.time.LocalDateTime;
@@ -14,6 +15,7 @@ public class RTEManager {
 
     ComponentManager _componentManager;
     JSONManager _jsonManager;
+    Logger logger = new Logger();
 
     public RTEManager(ComponentManager componentManager, JSONManager jsonManager) {
         _componentManager = componentManager;
@@ -22,7 +24,7 @@ public class RTEManager {
 
     public void loadComponentsFromJson(String saveFilePath) {
         if (!_componentManager.getComponents().isEmpty()) {
-            System.out.println("Error: Components are not empty");
+            logger.printMessageError("Components are not empty");
             return;
         }
 

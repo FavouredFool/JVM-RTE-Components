@@ -1,5 +1,7 @@
 package org.task1;
 
+import org.logging.Logger;
+
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -10,8 +12,8 @@ public class RepeatingRetrieval {
     public static String[] _queries = {"Berg", "Hof", "Maier", "Bay", "Winzer", "Plaza"};
 
 
-    public static void InitialRetrieval(IHotelSearch hotelSearchProxy) {
-        System.out.println("Hotel Component: Get all Hotels");
+    public static void InitialRetrieval(IHotelSearch hotelSearchProxy, Logger myLog) {
+        myLog.printMessageComponent("HotelComponent [ID: " + Client._componentID + "]", "Get all Hotels");
 
         List<Hotel> result = hotelSearchProxy.getHotelsByName("");
 
@@ -19,16 +21,16 @@ public class RepeatingRetrieval {
             System.out.println( str );
         }
 
-        ContinuousRetrieval(hotelSearchProxy);
+        ContinuousRetrieval(hotelSearchProxy, myLog);
     }
 
-    public static void ContinuousRetrieval(IHotelSearch hotelSearchProxy) {
+    public static void ContinuousRetrieval(IHotelSearch hotelSearchProxy, Logger myLog) {
         _isStop = false;
 
         for (int i = 0; i < Integer.MAX_VALUE; i++) {
             String query = _queries[ThreadLocalRandom.current().nextInt(0, _queries.length)];
 
-            System.out.println("Hotel Component: Continuous Retrieval by Name [Name: '" + query + "']");
+            myLog.printMessageComponent("HotelComponent [ID: " + Client._componentID + "]", "Continuous Retrieval by Name [Name: '" + query + "']");
 
             //System.out.println("\nFind all hotels who's name contains the String \"Hotel\":");
 

@@ -19,6 +19,8 @@ public class Component implements Runnable {
     Class<?> _componentClass;
     Thread _thread;
 
+    Logger _logger;
+
     public Component(int id, String path, ClassLoader classLoader, Method startMethod, Method endMethod, Method loadMethod, Class<?> componentClass){
         _componentState = ComponentState.SLEEP;
         _path = path;
@@ -28,6 +30,8 @@ public class Component implements Runnable {
         _endMethod = endMethod;
         _loadMethod = loadMethod;
         _componentClass = componentClass;
+
+        _logger = new Logger();
     }
 
     Object _startClassInstance;
@@ -46,7 +50,7 @@ public class Component implements Runnable {
             }
         }
 
-        System.out.println("Injected Logger");
+        _logger.printMessageInfo("Injected Logger");
     }
 
     @Override

@@ -1,6 +1,7 @@
 package org.components;
 
 import org.components.commands.*;
+import org.logging.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,8 +10,9 @@ import java.io.InputStreamReader;
 public class CommandLineReader {
 
     RTEManager _rteManager;
+    Logger _logger = new Logger();
 
-    public CommandLineReader(RTEManager rteManager){
+    public CommandLineReader(RTEManager rteManager, Logger logger){
         _rteManager = rteManager;
     }
 
@@ -54,7 +56,7 @@ public class CommandLineReader {
     void interpretRTECommands(String verb, String file) {
         switch (verb) {
             case "stop":
-                System.out.println("--- Power down Runtime Environment. Goodbye. ---");
+                _logger.printMessageInfo("Power down Runtime Environment. Goodbye.");
                 System.exit(0);
                 break;
         }
@@ -78,20 +80,20 @@ public class CommandLineReader {
     }
 
     void writeTutorial() {
-        System.out.println("--- This is Runtime-Environment for component deployment. ---");
-        System.out.println("--- Supported components are HotelComponent, GreetingComponent, and LoadComponent (for load balancing). ---");
-        System.out.println();
-        System.out.println("--- Commands: ---");
-        System.out.println();
-        System.out.println("\"component deploy [relative path to .jar]\" --- deploys the component from a local folder.");
-        System.out.println("\"component status\" --- logs every component's status.");
-        System.out.println("\"component status [componentID]\" --- logs the component's status.");
-        System.out.println("\"component start [componentID]\" --- starts the component.");
-        System.out.println("\"component stop [componentID]\" --- stops the component.");
-        System.out.println("\"component delete [componentID]\" --- deletes the component.");
-        System.out.println("\"component save\" --- saves the component configuration.");
-        System.out.println("\"component load [jsonPath]\" --- loads a configuration from a json file.");
-        System.out.println("\"component stress\" --- attempts to put stress on a loadComponent if available.");
-        System.out.println("\"rte stop\" --- stops the Runtime Environment.");
+        _logger.printMessageInfo("This is Runtime-Environment for component deployment.");
+        _logger.printMessageInfo("Supported components are HotelComponent, GreetingComponent, and LoadComponent (for load balancing).");
+        _logger.printEmpty();
+        _logger.printMessageInfo("Commands");
+        _logger.printEmpty();
+        _logger.printMessageInfo("\"component deploy [relative path to .jar]\" --- deploys the component from a local folder.");
+        _logger.printMessageInfo("\"component status\" --- logs every component's status.");
+        _logger.printMessageInfo("\"component status [componentID]\" --- logs the component's status.");
+        _logger.printMessageInfo("\"component start [componentID]\" --- starts the component.");
+        _logger.printMessageInfo("\"component stop [componentID]\" --- stops the component.");
+        _logger.printMessageInfo("\"component delete [componentID]\" --- deletes the component.");
+        _logger.printMessageInfo("\"component save\" --- saves the component configuration.");
+        _logger.printMessageInfo("\"component load [jsonPath]\" --- loads a configuration from a json file.");
+        _logger.printMessageInfo("\"component stress\" --- attempts to put stress on a loadComponent if available.");
+        _logger.printMessageInfo("\"rte stop\" --- stops the Runtime Environment.");
     }
 }

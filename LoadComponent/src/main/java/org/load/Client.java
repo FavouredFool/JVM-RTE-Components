@@ -15,9 +15,12 @@ public class Client {
 
         _componentID = componentID;
 
-        if (myLog != null){
-            myLog.printMessage("Meldung aus LoadComponent [ID: " + Client._componentID + "]: Prozess gestartet");
+        if (myLog == null) {
+            System.out.println("ERROR: Logger not injected!");
+            return;
         }
+
+        myLog.printMessageComponent("LoadComponent [ID: " + Client._componentID + "]", "Prozess gestartet");
 
         LoadProcessor.prepareProcessing();
         LoadProcessor.process(myLog);
@@ -25,9 +28,13 @@ public class Client {
 
     @StopMethodAnnotation
     public void endComponent() {
-        if (myLog != null) {
-            myLog.printMessage("Meldung aus LoadComponent [ID: " + Client._componentID + "]: Prozess beendet");
+
+        if (myLog == null) {
+            System.out.println("ERROR: Logger not injected!");
+            return;
         }
+
+        myLog.printMessageComponent("LoadComponent [ID: " + Client._componentID + "]", "Prozess beendet");
 
         LoadProcessor.interruptProcessing();
     }

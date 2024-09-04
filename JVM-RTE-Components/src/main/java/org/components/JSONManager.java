@@ -1,6 +1,7 @@
 package org.components;
 
 import org.json.simple.JSONObject;
+import org.logging.Logger;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -13,6 +14,7 @@ import java.util.*;
 public class JSONManager {
 
     static String _saveFileName = "savedConfiguration";
+    Logger _logger = new Logger();
 
     public void writeJson(List<Component> components, boolean withTimeStamp){
 
@@ -81,10 +83,10 @@ public class JSONManager {
                     // Try to parse the String key to Integer
                     integerKey = Integer.parseInt((String) key);
                 } catch (NumberFormatException e) {
-                    System.out.println("Cannot convert key to Integer: " + key);
+                    _logger.printMessageInfo("Cannot convert key to Integer: " + key);
                 }
             } else {
-                System.out.println("Unsupported key type for conversion: " + key);
+                _logger.printMessageInfo("Unsupported key type for conversion: " + key);
             }
 
             if (integerKey != null  && value instanceof String) {
@@ -92,7 +94,7 @@ public class JSONManager {
                 Map.Entry<Integer, String> castedEntry = new AbstractMap.SimpleEntry<>(integerKey, (String) value);
                 entryList.add(castedEntry);
             } else {
-                System.out.println("Skipping entry due to incompatible types: " + rawEntry);
+                _logger.printMessageInfo("Skipping entry due to incompatible types: " + rawEntry);
             }
         }
         return entryList;

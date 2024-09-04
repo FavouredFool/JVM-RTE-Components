@@ -1,13 +1,16 @@
 package org.components.commands;
 
 import org.components.RTEManager;
+import org.logging.Logger;
 
 public class StressCommand implements Command{
 
     RTEManager _rteManager;
+    Logger _logger;
 
     public StressCommand(RTEManager rteManager) {
         _rteManager = rteManager;
+        _logger = new Logger();
     }
 
     @Override
@@ -16,7 +19,7 @@ public class StressCommand implements Command{
         try {
             stress = Integer.parseInt(inputString);
         } catch (NumberFormatException e) {
-            System.out.println("error: did not provide a length of stress (integer)");
+            _logger.printMessageError("Did not provide a length of stress (integer");
             return;
         }
 

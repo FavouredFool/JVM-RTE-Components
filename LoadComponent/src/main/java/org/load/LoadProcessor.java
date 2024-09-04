@@ -16,7 +16,7 @@ public class LoadProcessor {
 
         _processingQueue.offer(stress);
 
-        myLog.printMessage("Meldung aus LoadComponent [ID: " + Client._componentID + "]: Load Size " + stress + " wurde gequeued in Position " + positionInQueue +".");
+        myLog.printMessageComponent("LoadComponent [ID: " + Client._componentID + "]", "Load Size " + stress + " wurde gequeued in Position " + positionInQueue +".");
     }
 
     public static void process(Logger myLog) {
@@ -31,7 +31,7 @@ public class LoadProcessor {
             }
 
             int currentLoadSize = _processingQueue.peek();
-            myLog.printMessage("Meldung aus LoadComponent [ID: " + Client._componentID + "]: Processing von Load Size " + currentLoadSize + " wurde gestartet.");
+            myLog.printMessageComponent("LoadComponent [ID: " + Client._componentID + "]", "Processing von Load Size " + currentLoadSize + " wurde gestartet.");
 
             // This simulates load
             try {
@@ -46,14 +46,14 @@ public class LoadProcessor {
             if (_isInterrupted){
                 // Empty the queue, because the component is being turned off
                 _processingQueue.clear();
-                myLog.printMessage("Meldung aus LoadComponent [ID: " + Client._componentID + "]: Verarbeitung wurde abgebrochen");
+                myLog.printMessageComponent("LoadComponent [ID: " + Client._componentID + "]", "Verarbeitung wurde abgebrochen");
                 break;
             }
 
-            myLog.printMessage("Meldung aus LoadComponent [ID: " + Client._componentID + "]: Verarbeitung von Load Size " + currentLoadSize + " wurde abgeschlossen");
+            myLog.printMessageComponent("LoadComponent [ID: " + Client._componentID + "]", "Verarbeitung von Load Size " + currentLoadSize + " wurde abgeschlossen");
 
             if (_processingQueue.isEmpty()) {
-                myLog.printMessage("Meldung aus LoadComponent [ID: " + Client._componentID + "]: Queue ist leer");
+                myLog.printMessageComponent("LoadComponent [ID: " + Client._componentID + "]", "Queue ist leer");
             }
         }
     }

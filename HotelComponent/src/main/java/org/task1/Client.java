@@ -16,9 +16,12 @@ public class Client {
 
         _componentID = componentID;
 
-        if (myLog != null){
-            myLog.printMessage("Meldung aus HotelComponent [ID: " + Client._componentID + "]: Prozess gestartet");
+        if (myLog == null) {
+            System.out.println("ERROR: Logger not injected!");
+            return;
         }
+
+        myLog.printMessageComponent("HotelComponent [ID: " + Client._componentID + "]", "Prozess gestartet");
 
         // Creates hotelRetrieval.
         HotelRetrieval hotelRetrieval = new HotelRetrieval();
@@ -36,7 +39,7 @@ public class Client {
         // Simulates how an extern client (outside of the component) would use hotelSearch.
         hotelSearchProxy.openSession();
 
-        RepeatingRetrieval.InitialRetrieval(hotelSearchProxy);
+        RepeatingRetrieval.InitialRetrieval(hotelSearchProxy, myLog);
 
         hotelSearchProxy.closeSession();
     }
@@ -44,9 +47,12 @@ public class Client {
     @StopMethodAnnotation
     public void endComponent() {
 
-        if (myLog != null){
-            myLog.printMessage("Meldung aus HotelComponent [ID: " + Client._componentID + "]: Prozess beendet");
+        if (myLog == null) {
+            System.out.println("ERROR: Logger not injected!");
+            return;
         }
+
+        myLog.printMessageComponent("HotelComponent [ID: " + Client._componentID + "]", "Prozess beendet");
 
         RepeatingRetrieval.StopRetrieval();
     }

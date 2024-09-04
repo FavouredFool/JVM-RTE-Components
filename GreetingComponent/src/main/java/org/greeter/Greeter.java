@@ -1,20 +1,22 @@
 package org.greeter;
 
+import org.logging.Logger;
+
 public class Greeter {
 
     static boolean _isStop = false;
 
-    public static void InitialGreet() {
-        System.out.println("Greeting Component: First Hello!");
+    public static void InitialGreet(Logger myLog) {
+        myLog.printMessageComponent("GreetingComponent [ID: " + Client._componentID + "]", "First Hello!");
 
-        ContinuousGreet();
+        ContinuousGreet(myLog);
     }
 
-    public static void ContinuousGreet() {
+    public static void ContinuousGreet(Logger myLog) {
         _isStop = false;
 
         for (int i = 0; i < Integer.MAX_VALUE; i++) {
-            System.out.println("Greeting Component: Continuous Hello! [Number " + i + "]");
+            myLog.printMessageComponent("GreetingComponent [ID: " + Client._componentID + "]", "Continuous Hello! [Number " + i + "]");
 
             try {
                 Thread.sleep(10000);
@@ -23,7 +25,7 @@ public class Greeter {
             }
 
             if (_isStop){
-                System.out.println("Greeting Component: Last Hello!");
+                myLog.printMessageComponent("GreetingComponent [ID: " + Client._componentID + "]", "Last Hello!");
                 break;
             }
 

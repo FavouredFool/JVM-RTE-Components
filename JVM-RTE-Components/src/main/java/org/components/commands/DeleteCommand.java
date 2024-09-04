@@ -1,13 +1,16 @@
 package org.components.commands;
 
 import org.components.RTEManager;
+import org.logging.Logger;
 
 public class DeleteCommand implements Command{
 
     RTEManager _rteManager;
+    Logger _logger;
 
     public DeleteCommand(RTEManager rteManager) {
         _rteManager = rteManager;
+        _logger = new Logger();
     }
 
     @Override
@@ -17,16 +20,16 @@ public class DeleteCommand implements Command{
             success = _rteManager.get_componentManager().deleteComponent(Integer.parseInt(inputString));
         }
         catch(Exception e) {
-            System.out.println("error: Enter an ID, not a name.");
+            _logger.printMessageError("Enter an ID, not a name.");
             success = false;
         }
 
         if (success) {
-            System.out.println("Component with ID " + inputString + " successfully deleted.");
+            _logger.printMessageInfo("Component with ID " + inputString + " successfully deleted.");
             _rteManager.writeComponentsToJson(false);
         }
         else {
-            System.out.println("Component with ID " + inputString + " could not be deleted.");
+            _logger.printMessageInfo("Component with ID " + inputString + " could not be deleted.");
         }
     }
 }

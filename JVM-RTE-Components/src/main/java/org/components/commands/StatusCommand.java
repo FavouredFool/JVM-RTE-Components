@@ -1,23 +1,26 @@
 package org.components.commands;
 
 import org.components.RTEManager;
+import org.logging.Logger;
 
 public class StatusCommand implements Command{
 
     RTEManager _rteManager;
+    Logger _logger;
 
     public StatusCommand(RTEManager rteManager) {
         _rteManager = rteManager;
+        _logger = new Logger();
     }
 
     @Override
     public void execute(String inputString) {
 
         if (inputString.isEmpty()){
-            System.out.println("Status for all Components:");
+            _logger.printMessageInfo("Status for all Components:");
         }
         else {
-            System.out.println("Status for Component with ID " + inputString + ":");
+            _logger.printMessageInfo("Status for Component with ID " + inputString + ":");
         }
 
         System.out.println(_rteManager.get_componentManager().getComponentStatus(inputString));

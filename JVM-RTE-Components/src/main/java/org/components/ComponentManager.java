@@ -13,11 +13,13 @@ import java.util.jar.JarEntry;
 import org.componentannotations.*;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
+import org.logging.Logger;
 
 public class ComponentManager {
 
     List<Component> _components = new ArrayList<>();
     static int _id_counter = 0;
+    Logger _logger = new Logger();
 
     public boolean loadJar(String path, int existingID, boolean isRelativePath) {
 
@@ -40,7 +42,7 @@ public class ComponentManager {
             URL[] urls = new URL[]{new URL("jar:file:" + componentPath + "!/")};
             classLoader = URLClassLoader.newInstance(urls);
         } catch (Exception e) {
-            System.out.println("error: " + e.getMessage());
+            _logger.printMessageError(e.getMessage());
             return false;
         }
 
@@ -75,7 +77,7 @@ public class ComponentManager {
         }
 
         if (componentClass == null) {
-            System.out.println("error: Couldn't find start or end class");
+            _logger.printMessageError("Couldn't find start or end class");
             return false;
         }
 
@@ -109,7 +111,7 @@ public class ComponentManager {
         _id_counter += 1;
 
         Component newComponent = new Component(id, componentPath, classLoader, startMethod, endMethod, loadMethod, componentClass);
-        System.out.println("Deployed Component: " + newComponent);
+        _logger.printMessageInfo("Deployed Component: " + newComponent);
 
         return newComponent;
     }
@@ -147,12 +149,12 @@ public class ComponentManager {
         Component component = _components.stream().filter(e -> e._id == componentId).findFirst().orElse(null);
 
         if (component == null) {
-            System.out.println("error: Couldn't find component with id " + componentId);
+            _logger.printMessageError("Couldn't find component with id " + componentId);
             return false;
         }
 
         if (!(component._componentState == ComponentState.SLEEP)){
-            System.out.println("error: Component is not in sleep-state");
+            _logger.printMessageError("Component is not in sleep-state");
             return false;
         }
 
@@ -167,17 +169,17 @@ public class ComponentManager {
         Component component = _components.stream().filter(e -> e._id == componentId).findFirst().orElse(null);
 
         if (component == null) {
-            System.out.println("error: Couldn't find component with id " + componentId);
+            _logger.printMessageError("Couldn't find component with id " + componentId);
             return false;
         }
 
         if (!(component._componentState == ComponentState.ACTIVE)){
-            System.out.println("error: Component is not in active-state");
+            _logger.printMessageError("Component is not in active-state");
             return false;
         }
 
         if (!(component._thread.isAlive())){
-            System.out.println("error: Components Thread is not alive");
+            _logger.printMessageError("Components Thread is not alive");
         }
 
         component.stop();
@@ -190,12 +192,12 @@ public class ComponentManager {
         Component component = _components.stream().filter(e -> e._id == componentId).findFirst().orElse(null);
 
         if (component == null) {
-            System.out.println("error: Couldn't find component with id " + componentId);
+            _logger.printMessageError("Couldn't find component with id " + componentId);
             return false;
         }
 
         if (!(component._componentState == ComponentState.SLEEP)){
-            System.out.println("error: Component is not in sleep-state");
+            _logger.printMessageError("Component is not in sleep-state");
             return false;
         }
 
@@ -213,7 +215,7 @@ public class ComponentManager {
         }
 
         if (loadComponents.isEmpty()){
-            System.out.println("error: No component available");
+            _logger.printMessageError("No component available");
             return;
         }
 
@@ -232,7 +234,7 @@ public class ComponentManager {
                 status = getComponentStatusById(Integer.parseInt(componentId));
             }
             catch (Exception e){
-                System.out.println("error: Enter an ID, not a name.");
+                _logger.printMessageError("Enter an ID, not a name.");
             }
         }
 
