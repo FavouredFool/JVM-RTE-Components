@@ -1,5 +1,7 @@
 package org.components;
 
+import org.components.commands.*;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -59,35 +61,21 @@ public class CommandLineReader {
         }
     }
 
-    void interpretComponentCommand(String verb, String file) {
+    void interpretComponentCommand(String verb, String inputString) {
 
-        switch (verb) {
-            case "deploy":
-                _rteManager.deploy(file);
-                break;
-            case "start":
-                _rteManager.start(file);
-                break;
-            case "stop":
-                _rteManager.stop(file);
-                break;
-            case "status":
-                _rteManager.status(file);
-                break;
-            case "delete":
-                _rteManager.delete(file);
-                break;
-            case "save":
-                _rteManager.save();
-                break;
-            case "load":
-                _rteManager.load(file);
-                break;
-            case "stress":
-                _rteManager.stress(file);
-                break;
-            default: return;
-        }
+        Command inputCommand = switch (verb) {
+            case "deploy" -> new DeployCommand(_rteManager);
+            case "start" -> new StartCommand(_rteManager);
+            case "stop" -> new StopCommand(_rteManager);
+            case "status" -> new StatusCommand(_rteManager);
+            case "delete" -> new DeleteCommand(_rteManager);
+            case "save" -> new SaveCommand(_rteManager);
+            case "load" -> new LoadCommand(_rteManager);
+            case "stress" -> new StressCommand(_rteManager);
+            default -> new NullCommand(_rteManager);
+        };
+
+        inputCommand.execute(inputString);
     }
 
     void writeTutorial() {
