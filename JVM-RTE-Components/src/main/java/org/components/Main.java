@@ -14,12 +14,13 @@ public class Main {
             }
         }
 
-        RTEManager rteManager = new RTEManager();
+        ComponentManager componentManager = new ComponentManager();
+        JSONManager jsonManager = new JSONManager();
+        RTEManager rteManager = new RTEManager(componentManager, jsonManager);
         CommandLineReader reader = new CommandLineReader(rteManager);
 
-        rteManager.writeJson(false);
+        rteManager.writeComponentsToJson(false);
 
-        // this blocks the main Thread forever
         reader.readFromCommandLine();
     }
 

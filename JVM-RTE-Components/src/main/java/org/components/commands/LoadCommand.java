@@ -1,6 +1,5 @@
 package org.components.commands;
 
-import org.components.ComponentManager;
 import org.components.RTEManager;
 
 public class LoadCommand implements Command{
@@ -13,6 +12,6 @@ public class LoadCommand implements Command{
 
     @Override
     public void execute(String inputString) {
-        _rteManager.get_componentManager().load(inputString);
+        _rteManager.loadComponentsFromJson(inputString);
     }
 }

@@ -1,6 +1,5 @@
 package org.components;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -12,18 +11,16 @@ import java.util.*;
 import java.util.jar.JarFile;
 import java.util.jar.JarEntry;
 import org.componentannotations.*;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
 public class ComponentManager {
 
     List<Component> _components = new ArrayList<>();
-    static int id_counter = 0;
+    static int _id_counter = 0;
 
     public boolean loadJar(String path, int existingID, boolean isRelativePath) {
 
-        //String pathToJar = "src/main/resources/components/" + fileName;
         Enumeration<JarEntry> jarEntries = null;
         URLClassLoader classLoader = null;
 
@@ -86,89 +83,9 @@ public class ComponentManager {
         Method loadMethod = getMethodsAnnotatedWith(componentClass, LoadMethodAnnotation.class).stream().findFirst().orElse(null);
 
         // Create new Component and add it to list
-        int id;
-
-        if (existingID == -1) {
-            id = id_counter;
-        }
-        else {
-            id = existingID;
-            id_counter = existingID;
-        }
-
-        Component component = new Component(id, componentPath, classLoader, startMethod, endMethod, loadMethod, componentClass);
-        _components.add(component);
-
-        System.out.println("Deployed Component: " + _components.get(_components.size()-1).toString());
-
-        id_counter += 1;
+        _components.add(buildComponent(existingID, componentPath, classLoader, startMethod, endMethod, loadMethod, componentClass));
 
         return true;
-    }
-
-    public void load(String saveFilePath) {
-
-        if (!_components.isEmpty()) {
-            System.out.println("Error: Components are not empty");
-            return;
-        }
-
-        String fullPath = System.getProperty("user.dir") + "\\" + saveFilePath;
-
-        String content = "{}";
-        // From: https://www.digitalocean.com/community/tutorials/java-read-file-to-string
-        try {
-            content = new String(Files.readAllBytes(Paths.get(fullPath)));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        System.out.println(content);
-        JSONObject obj = (JSONObject)JSONValue.parse(content);
-
-        Set<Map.Entry<?, ?>> entrySet = obj.entrySet();
-
-        // Step to create a new set of Entry<Integer, String>
-        List<Map.Entry<Integer, String>> entryList = new ArrayList<>();
-
-        for (Map.Entry<?, ?> rawEntry : entrySet) {
-            Object key = rawEntry.getKey();
-            Object value = rawEntry.getValue();
-            Integer integerKey = null;
-
-            // Attempt to cast or convert the key to Integer
-            if (key instanceof Integer) {
-                integerKey = (Integer) key; // Key is already an Integer
-            } else if (key instanceof String) {
-                try {
-                    // Try to parse the String key to Integer
-                    integerKey = Integer.parseInt((String) key);
-                } catch (NumberFormatException e) {
-                    System.out.println("Cannot convert key to Integer: " + key);
-                }
-            } else {
-                System.out.println("Unsupported key type for conversion: " + key);
-            }
-
-            if (integerKey != null  && value instanceof String) {
-                // Safe to cast as we have checked the types
-                Map.Entry<Integer, String> castedEntry = new AbstractMap.SimpleEntry<>(integerKey, (String) value);
-                entryList.add(castedEntry);
-            } else {
-                System.out.println("Skipping entry due to incompatible types: " + rawEntry);
-            }
-        }
-
-        entryList.sort(Comparator.comparingInt(Map.Entry::getKey));
-
-        // Print out the successfully casted entries
-        for (Map.Entry<Integer, String> entry : entryList) {
-            System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue());
-        }
-
-        for (int i = 0; i < entryList.size(); i++){
-            loadJar(entryList.get(i).getValue(), entryList.get(i).getKey(), false);
-        }
     }
 
     public String getNameFromJarEntry(JarEntry jarEntry) {
@@ -176,6 +93,25 @@ public class ComponentManager {
         // -6 to remove .class ending
         className = className.substring(0, className.length() - 6);
         return className.replace('/', '.');
+    }
+
+    public Component buildComponent(int existingID, String componentPath, URLClassLoader classLoader, Method startMethod, Method endMethod, Method loadMethod, Class<?> componentClass) {
+        int id;
+
+        if (existingID == -1) {
+            id = _id_counter;
+        }
+        else {
+            id = existingID;
+            _id_counter = existingID;
+        }
+
+        _id_counter += 1;
+
+        Component newComponent = new Component(id, componentPath, classLoader, startMethod, endMethod, loadMethod, componentClass);
+        System.out.println("Deployed Component: " + newComponent);
+
+        return newComponent;
     }
 
     public Class<?> loadClassWithClassloader(ClassLoader classLoader, String className) {
@@ -199,6 +135,12 @@ public class ComponentManager {
         }
 
         return methods;
+    }
+
+    public void loadComponents(List<Map.Entry<Integer, String>> entryList){
+        for (int i = 0; i < entryList.size(); i++){
+            loadJar(entryList.get(i).getValue(), entryList.get(i).getKey(), false);
+        }
     }
 
     public boolean startComponent(int componentId) {

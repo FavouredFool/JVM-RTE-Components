@@ -19,8 +19,6 @@ public class Component implements Runnable {
     Class<?> _componentClass;
     Thread _thread;
 
-
-
     public Component(int id, String path, ClassLoader classLoader, Method startMethod, Method endMethod, Method loadMethod, Class<?> componentClass){
         _componentState = ComponentState.SLEEP;
         _path = path;
@@ -35,29 +33,20 @@ public class Component implements Runnable {
     Object _startClassInstance;
 
     public void injectLogger(Object instance) {
-
         for (Field field : _componentClass.getDeclaredFields()){
-
             if (field.isAnnotationPresent(InjectAnnotation.class))
             {
                 field.setAccessible(true);
-
                 try {
                     field.set(instance, (Logger)new Logger());
                 } catch (IllegalAccessException e) {
                     throw new RuntimeException(e);
                 }
-
                 break;
             }
-
         }
 
         System.out.println("Injected Logger");
-    }
-
-    public String toString() {
-        return "[Component(ID: " + _id + ", State: " + _componentState + ", Path: " + _path + ")]";
     }
 
     @Override
@@ -72,7 +61,6 @@ public class Component implements Runnable {
     }
 
     public void stop() {
-
         try {
             _endMethod.invoke(_startClassInstance);
         } catch (IllegalAccessException | InvocationTargetException e) {
@@ -88,6 +76,10 @@ public class Component implements Runnable {
         } catch (IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public String toString() {
+        return "[Component(ID: " + _id + ", State: " + _componentState + ", Path: " + _path + ")]";
     }
 
     public ComponentState get_componentState() {

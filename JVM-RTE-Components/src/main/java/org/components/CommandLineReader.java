@@ -10,7 +10,6 @@ public class CommandLineReader {
 
     RTEManager _rteManager;
 
-
     public CommandLineReader(RTEManager rteManager){
         _rteManager = rteManager;
     }
@@ -80,7 +79,7 @@ public class CommandLineReader {
 
     void writeTutorial() {
         System.out.println("--- This is Runtime-Environment for component deployment. ---");
-        System.out.println("--- Active Components print to console every 10 seconds. ---");
+        System.out.println("--- Supported components are HotelComponent, GreetingComponent, and LoadComponent (for load balancing). ---");
         System.out.println();
         System.out.println("--- Commands: ---");
         System.out.println();

@@ -13,7 +13,7 @@ public class DeployCommand implements Command{
     @Override
     public void execute(String inputString) {
         if (_rteManager.get_componentManager().loadJar(inputString, -1, true)){
-            _rteManager.writeJson(false);
+            _rteManager.writeComponentsToJson(false);
         }
         else {
             System.out.println(inputString + " could not be loaded.");

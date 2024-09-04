@@ -23,7 +23,7 @@ public class DeleteCommand implements Command{
 
         if (success) {
             System.out.println("Component with ID " + inputString + " successfully deleted.");
-            _rteManager.writeJson(false);
+            _rteManager.writeComponentsToJson(false);
         }
         else {
             System.out.println("Component with ID " + inputString + " could not be deleted.");

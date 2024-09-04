@@ -12,7 +12,7 @@ public class SaveCommand implements Command{
 
     @Override
     public void execute(String inputString) {
-        _rteManager.writeJson(true);
+        _rteManager.writeComponentsToJson(true);
         System.out.println("Saved configuration");
     }
 }

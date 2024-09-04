@@ -1,56 +1,42 @@
 package org.components;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 
 public class RTEManager {
 
     ComponentManager _componentManager;
-    static String saveFileName = "savedConfiguration";
+    JSONManager _jsonManager;
 
-    public RTEManager() {
-        _componentManager = new ComponentManager();
+    public RTEManager(ComponentManager componentManager, JSONManager jsonManager) {
+        _componentManager = componentManager;
+        _jsonManager = jsonManager;
     }
 
-    public void writeJson(boolean withTimeStamp){
-
-        //From: https://stackoverflow.com/questions/23068676/how-to-get-current-timestamp-in-string-format-in-java-yyyy-mm-dd-hh-mm-ss
-        // Get the current date and time
-        LocalDateTime now = LocalDateTime.now();
-
-        // Define the format
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
-
-        // Format the current date and time
-        String formattedNow = now.format(formatter);
-
-        // From: https://www.tutorialspoint.com/how-to-write-create-a-json-file-using-java
-
-        JSONObject jsonObject = new JSONObject();
-
-        for(Component component : _componentManager.getComponents()){
-            jsonObject.put(component.get_id(), component.get_path());
+    public void loadComponentsFromJson(String saveFilePath) {
+        if (!_componentManager.getComponents().isEmpty()) {
+            System.out.println("Error: Components are not empty");
+            return;
         }
 
-        FileWriter file = null;
-        try {
-            if (withTimeStamp){
-                file = new FileWriter(System.getProperty("user.dir") + "/[" + formattedNow + "]_" + saveFileName + ".json");
-            }
-            else {
-                file = new FileWriter(System.getProperty("user.dir") + "/" + saveFileName + ".json");
-            }
+        String jsonContent = _jsonManager.findJsonContent(saveFilePath);
+        JSONObject obj = (JSONObject) JSONValue.parse(jsonContent);
 
-            file.write(jsonObject.toJSONString());
-            file.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        List<Map.Entry<Integer, String>> entryList = _jsonManager.readEntriesFromJsonContent(obj.entrySet());
+        entryList.sort(Comparator.comparingInt(Map.Entry::getKey));
+
+        _componentManager.loadComponents(entryList);
+    }
+
+    public void writeComponentsToJson(boolean withTimeStamp) {
+        _jsonManager.writeJson(_componentManager.getComponents(), withTimeStamp);
     }
 
     public ComponentManager get_componentManager() {
