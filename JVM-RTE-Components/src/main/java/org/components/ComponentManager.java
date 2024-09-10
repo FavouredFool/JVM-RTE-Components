@@ -158,9 +158,7 @@ public class ComponentManager {
             return false;
         }
 
-        component._thread = new Thread(component);
-        component._thread.start();
-        component._componentState = ComponentState.ACTIVE;
+        component.start();
 
         return true;
     }
@@ -183,7 +181,6 @@ public class ComponentManager {
         }
 
         component.stop();
-        component._componentState = ComponentState.SLEEP;
 
         return true;
     }

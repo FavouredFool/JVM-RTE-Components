@@ -12,7 +12,7 @@ public class CommandLineReader {
     RTEManager _rteManager;
     Logger _logger = new Logger();
 
-    public CommandLineReader(RTEManager rteManager, Logger logger){
+    public CommandLineReader(RTEManager rteManager){
         _rteManager = rteManager;
     }
 

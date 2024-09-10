@@ -64,6 +64,12 @@ public class Component implements Runnable {
         }
     }
 
+    public void start() {
+        _thread = new Thread(this);
+        _thread.start();
+        _componentState = ComponentState.ACTIVE;
+    }
+
     public void stop() {
         try {
             _endMethod.invoke(_startClassInstance);
@@ -72,6 +78,8 @@ public class Component implements Runnable {
         }
 
         _thread.interrupt();
+
+        _componentState = ComponentState.SLEEP;
     }
 
     public void processLoad(int stress) {

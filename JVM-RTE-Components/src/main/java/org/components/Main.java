@@ -16,11 +16,10 @@ public class Main {
             }
         }
 
-        Logger logger = new Logger();
         ComponentManager componentManager = new ComponentManager();
         JSONManager jsonManager = new JSONManager();
         RTEManager rteManager = new RTEManager(componentManager, jsonManager);
-        CommandLineReader reader = new CommandLineReader(rteManager, logger);
+        CommandLineReader reader = new CommandLineReader(rteManager);
 
         rteManager.writeComponentsToJson(false);
 
