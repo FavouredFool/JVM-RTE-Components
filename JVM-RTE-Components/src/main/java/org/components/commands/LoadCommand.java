@@ -3,7 +3,7 @@ package org.components.commands;
 import org.components.RTEManager;
 import org.logging.Logger;
 
-public class LoadCommand implements Command{
+public class LoadCommand implements ICommand {
 
     RTEManager _rteManager;
     Logger _logger;

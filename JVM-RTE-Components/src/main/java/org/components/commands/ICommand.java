@@ -1,8 +1,6 @@
 package org.components.commands;
 
-import org.components.RTEManager;
-
-public interface Command {
+public interface ICommand {
 
     public void execute(String inputString);
 }

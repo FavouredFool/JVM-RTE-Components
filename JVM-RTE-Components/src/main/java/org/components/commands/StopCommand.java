@@ -3,7 +3,7 @@ package org.components.commands;
 import org.components.RTEManager;
 import org.logging.Logger;
 
-public class StopCommand implements Command{
+public class StopCommand implements ICommand {
 
     RTEManager _rteManager;
     Logger _logger;

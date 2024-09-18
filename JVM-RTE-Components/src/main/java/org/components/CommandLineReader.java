@@ -64,7 +64,7 @@ public class CommandLineReader {
 
     void interpretComponentCommand(String verb, String inputString) {
 
-        Command inputCommand = switch (verb) {
+        ICommand inputCommand = switch (verb) {
             case "deploy" -> new DeployCommand(_rteManager);
             case "start" -> new StartCommand(_rteManager);
             case "stop" -> new StopCommand(_rteManager);
